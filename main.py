@@ -3,7 +3,7 @@ import discord
 import os
 from util.error_message import panic
 
-from discord_token import bot_token
+bot_token = os.environ.get("bot_token")
 
 COGS = [x[:-3] for x in os.listdir("commands") if x.endswith(".py")]
 
