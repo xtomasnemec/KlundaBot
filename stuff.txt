@@ -1,0 +1,21 @@
+@bot.slash_command(
+    description="Ask a local foxxo to ^W^ for you."
+)
+async def localfox(ctx):
+    embed = discord.Embed(
+        title="^W^",
+    )
+    embed.set_image(url="https://i.imgur.com/250myup.jpg")
+    await ctx.respond(embed=embed)
+
+@bot.slash_command(
+    description="POG"
+)
+async def mileschamp(ctx):
+    embed = discord.Embed(
+        title="",
+    )
+    embed.set_image(
+        url="https://media.discordapp.net/attachments/1003288281854787708/1014824393907634186/RyWEDkY.png")
+    await ctx.respond(embed=embed)
+
