@@ -20,10 +20,8 @@ class Manage(commands.Cog):
     admin = SlashCommandGroup(
         "admin",
         "Commands for the bot's owner.",
-        checks=[
-            commands.is_owner().predicate
-        ],
-        guild_ids=[admin_guild_id]
+        checks=[commands.is_owner().predicate],
+        guild_ids=[admin_guild_id],
     )
 
     @admin.command(description="Reload the bot's extensions")
@@ -50,14 +48,22 @@ class Manage(commands.Cog):
         await self.bot.sync_commands()
 
     @admin.command(descriptioon="execute from file")
-    async def exec(self, ctx, cmd: Option(str, "command to run as defined in file"), args: Option(str, "semicolon separated")):
+    async def exec(
+        self,
+        ctx,
+        cmd: Option(str, "command to run as defined in file"),
+        args: Option(str, "semicolon separated"),
+    ):
         import exec.exec
+
         importlib.reload(exec.exec)
         fun = getattr(exec.exec, cmd)
         await fun(ctx, args.split(";"))
 
     @commands.Cog.listener()
-    async def on_application_command_error(self, ctx: discord.ApplicationContext, error: discord.DiscordException):
+    async def on_application_command_error(
+        self, ctx: discord.ApplicationContext, error: discord.DiscordException
+    ):
         if isinstance(error, commands.NotOwner):
             ctx.options = {"handled": True}
             await apologize(ctx, "You can't use that command.")

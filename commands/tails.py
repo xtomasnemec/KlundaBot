@@ -19,7 +19,8 @@ class Tails(commands.Cog):
             title=f"Tails is now fluffing his tail.",
         )
         embed.set_image(
-            url="https://media.discordapp.net/attachments/865374572789760030/1017083766881132574/modern_tails_sonic_generations_petting_namesakes_gif.gif")
+            url="https://media.discordapp.net/attachments/865374572789760030/1017083766881132574/modern_tails_sonic_generations_petting_namesakes_gif.gif"
+        )
         await ctx.respond(embed=embed)
 
     @tails.command(description="Ask a local foxxo to ^W^ for you.")
@@ -28,7 +29,8 @@ class Tails(commands.Cog):
             title="^W^",
         )
         embed.set_image(
-            url="https://images-ext-2.discordapp.net/external/2SxYHvkOZPVMXM9gN6ieCC1T8W3fXF2NjUJndQLTaTo/https/i.imgur.com/250myup.jpg")
+            url="https://images-ext-2.discordapp.net/external/2SxYHvkOZPVMXM9gN6ieCC1T8W3fXF2NjUJndQLTaTo/https/i.imgur.com/250myup.jpg"
+        )
         await ctx.respond(embed=embed)
 
     @tails.command(description="POG")
@@ -36,6 +38,5 @@ class Tails(commands.Cog):
         embed = discord.Embed(
             title="",
         )
-        embed.set_image(
-            url="https://i.imgur.com/RyWEDkY.png")
+        embed.set_image(url="https://i.imgur.com/RyWEDkY.png")
         await ctx.respond(embed=embed)

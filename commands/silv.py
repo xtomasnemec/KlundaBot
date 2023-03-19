@@ -33,9 +33,8 @@ class Silv(commands.Cog):
             hug_from = self.bot.user.mention
         embed = discord.Embed(
             title="Aww, I love hugs! 😊",
-            description=(
-                "{} *hugs* {}".format(hug_from, user.mention)),
-            url="https://solar-socks.tumblr.com/post/620691516062597120/wanting-to-spread-some-love-and-positive-vibes"
+            description=("{} *hugs* {}".format(hug_from, user.mention)),
+            url="https://solar-socks.tumblr.com/post/620691516062597120/wanting-to-spread-some-love-and-positive-vibes",
         )
         embed.set_image(
             url="https://64.media.tumblr.com/675559b932140f379cf55368701bcf1d/d162caca11d6dba1-ad/s1280x1920/1d12928ccff2b2f94424a496cbe21c8811aaa874.png"
@@ -48,23 +47,17 @@ class Silv(commands.Cog):
         await self._bday(ctx, user)
 
     async def _bday(self, ctx, user: discord.User):
-        embed = discord.Embed(
-            title=f"Happy birthday, {str(user)}!"
-        )
-        embed.set_image(
-            url="https://i.imgur.com/Kb9sajK.png"
-        )
+        embed = discord.Embed(title=f"Happy birthday, {str(user)}!")
+        embed.set_image(url="https://i.imgur.com/Kb9sajK.png")
         embed.set_footer(text="SilvBot")
         await ctx.respond(embed=embed)
 
     @silv.command(description="IT'S NO USE!")
     async def snouse(self, ctx):
         embed = discord.Embed(
-            title="It's no use!",
-            url="https://www.youtube.com/watch?v=Oq8AgIS3ZgU"
+            title="It's no use!", url="https://www.youtube.com/watch?v=Oq8AgIS3ZgU"
         )
-        embed.set_image(
-            url="https://i.ytimg.com/vi/tLfVHgiPjJA/maxresdefault.jpg")
+        embed.set_image(url="https://i.ytimg.com/vi/tLfVHgiPjJA/maxresdefault.jpg")
         embed.set_footer(text="SilvBot")
         await ctx.respond(embed=embed)
 

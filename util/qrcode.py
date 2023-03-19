@@ -1,6 +1,7 @@
 import qrcode
 import tempfile
 
+
 def generate_qr_code(text: str):
     file = tempfile.NamedTemporaryFile(suffix=".png")
     qr = qrcode.QRCode(

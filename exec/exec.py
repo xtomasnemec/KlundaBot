@@ -1,5 +1,6 @@
 import discord
 
+
 async def dl_stuff(ctx: discord.ApplicationContext, args):
     await ctx.defer()
     chnl = await ctx.guild.fetch_channel(1043386156911439922)
@@ -10,11 +11,15 @@ async def dl_stuff(ctx: discord.ApplicationContext, args):
     await ctx.respond("done!!")
     print("done!!!")
 
+
 async def testmsg(ctx: discord.ApplicationContext, args):
     await ctx.respond("done: " + "; ".join(), ephemeral=True)
 
+
 async def perms(ctx: discord.ApplicationContext, args):
-    print(ctx.channel.permissions_for(
-        ctx.guild.get_member(ctx.bot.user.id)
-    ).read_message_history)
+    print(
+        ctx.channel.permissions_for(
+            ctx.guild.get_member(ctx.bot.user.id)
+        ).read_message_history
+    )
     await ctx.respond("done", ephemeral=True)

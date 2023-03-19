@@ -32,7 +32,9 @@ async def status():
 
 # Send message on unhandled error
 @bot.event
-async def on_application_command_error(ctx: discord.ApplicationContext, error: discord.DiscordException):
+async def on_application_command_error(
+    ctx: discord.ApplicationContext, error: discord.DiscordException
+):
     await asyncio.sleep(0.15)
     if not (isinstance(ctx.options, dict) and ctx.options.get("handled") == True):
         await panic(ctx, f"{error}")
@@ -44,5 +46,6 @@ async def on_ready():
     print("✅ Bot logged in")
     print(f"ID: {bot.user.id}, Username: {bot.user.name}")
     status.start()
+
 
 bot.run(bot_token)
