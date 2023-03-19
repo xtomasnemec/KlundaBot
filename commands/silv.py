@@ -24,10 +24,10 @@ class Silv(commands.Cog):
     silv = SlashCommandGroup("silv", "Silver the Hedgehog fluff")
 
     @silv.command(description="Gift somebody a warm hug!")
-    async def hug(self, ctx, user: discord.User):
+    async def hug(self, ctx: discord.ApplicationContext, user: discord.User):
         await self._hug(ctx, user)
 
-    async def _hug(self, ctx, user: discord.User):
+    async def _hug(self, ctx: discord.ApplicationContext, user: discord.User):
         hug_from = ctx.author.mention
         if user == ctx.author:
             hug_from = self.bot.user.mention
@@ -43,17 +43,17 @@ class Silv(commands.Cog):
         await ctx.respond(embed=embed)
 
     @silv.command(description="Wish somebody a happy birthday!")
-    async def bday(self, ctx, user: discord.User):
+    async def bday(self, ctx: discord.ApplicationContext, user: discord.User):
         await self._bday(ctx, user)
 
-    async def _bday(self, ctx, user: discord.User):
+    async def _bday(self, ctx: discord.ApplicationContext, user: discord.User):
         embed = discord.Embed(title=f"Happy birthday, {str(user)}!")
         embed.set_image(url="https://i.imgur.com/Kb9sajK.png")
         embed.set_footer(text="SilvBot")
         await ctx.respond(embed=embed)
 
     @silv.command(description="IT'S NO USE!")
-    async def snouse(self, ctx):
+    async def snouse(self, ctx: discord.ApplicationContext):
         embed = discord.Embed(
             title="It's no use!", url="https://www.youtube.com/watch?v=Oq8AgIS3ZgU"
         )
@@ -62,7 +62,7 @@ class Silv(commands.Cog):
         await ctx.respond(embed=embed)
 
     @silv.command(description="Send some spooky art for Spooktober")
-    async def spook(self, ctx):
+    async def spook(self, ctx: discord.ApplicationContext):
         embed = discord.Embed(
             title="Boo! Happy Halloween!",
         )

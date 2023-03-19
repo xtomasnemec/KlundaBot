@@ -27,14 +27,16 @@ class Util(commands.Cog):
     @util.command(description="Give a random number from a range")
     async def rand(
         self,
-        ctx,
+        ctx: discord.ApplicationContext,
         min: Option(int, "The minimum number"),
         max: Option(int, "The maximum number"),
     ):
         await ctx.respond(random.randint(min, max))
 
     @util.command(description="Generate a QR code from a piece of text")
-    async def qr(self, ctx, text: Option(str, "The text to encode")):
+    async def qr(
+        self, ctx: discord.ApplicationContext, text: Option(str, "The text to encode")
+    ):
         qr_code = generate_qr_code(text)
         await ctx.send(
             f"👀 QR code requested by {ctx.author.name}", file=discord.File(qr_code.name)
@@ -42,7 +44,11 @@ class Util(commands.Cog):
         await ctx.respond("✅ QR code generated.", ephemeral=True)
 
     @util.command(description="Search for a term using DuckDuckGo")
-    async def ddg(self, ctx, term: Option(str, "The term to search for")):
+    async def ddg(
+        self,
+        ctx: discord.ApplicationContext,
+        term: Option(str, "The term to search for"),
+    ):
         res = await fetch_json(
             f"https://api.duckduckgo.com/?q={urlencode(term)}&format=json"
         )
@@ -59,7 +65,9 @@ class Util(commands.Cog):
             await apologize(ctx, "Aww, there are no results for that search.")
 
     @util.command(description="Learn new English words with UrbanDictionary")
-    async def urban(self, ctx, word: Option(str, "The word to look up")):
+    async def urban(
+        self, ctx: discord.ApplicationContext, word: Option(str, "The word to look up")
+    ):
         res = await fetch_json(
             f"http://api.urbandictionary.com/v0/define?term={urlencode(word)}"
         )
@@ -80,7 +88,9 @@ class Util(commands.Cog):
 
     @util.command(description="Get the weather for a location")
     async def weather(
-        self, ctx, location: Option(str, "The location to get the weather for")
+        self,
+        ctx: discord.ApplicationContext,
+        location: Option(str, "The location to get the weather for"),
     ):
         weather = await fetch_json(
             f"https://api.openweathermap.org/data/2.5/weather?q={urlencode(location)}&appid={owm_api_key}"
@@ -157,18 +167,20 @@ class Util(commands.Cog):
             await ctx.respond(embed=embed)
 
     @util.command(description="Check Silver's reaction time")
-    async def ping(self, ctx):
+    async def ping(self, ctx: discord.ApplicationContext):
         await ctx.respond(f"Pong! {self.bot.latency}", ephemeral=True)
 
     @util.command(description="Flip a coin!")
-    async def coin(self, ctx):
+    async def coin(self, ctx: discord.ApplicationContext):
         await ctx.respond(
             "It's {}.".format(random.choice(["Heads", "Tails"])),
         )
 
     @util.command(description="Get the latest stuff from Reddit!")
     async def reddit(
-        self, ctx, subreddit: Option(str, "The subreddit to get things from")
+        self,
+        ctx: discord.ApplicationContext,
+        subreddit: Option(str, "The subreddit to get things from"),
     ):
         if subreddit.startswith("r/"):
             subreddit = subreddit[2:]
@@ -204,7 +216,7 @@ class Util(commands.Cog):
         await ctx.respond(embed=embed)
 
     @util.command(description="Search for a word's definition")
-    async def define(self, ctx, word):
+    async def define(self, ctx: discord.ApplicationContext, word):
         res = await fetch_json(
             f"https://api.dictionaryapi.dev/api/v2/entries/en/{urlencode(word)}"
         )

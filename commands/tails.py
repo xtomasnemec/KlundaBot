@@ -14,7 +14,7 @@ class Tails(commands.Cog):
     tails = SlashCommandGroup("tails", "Tails related fluff")
 
     @tails.command(description="make tails fluff his tail")
-    async def tail(self, ctx):
+    async def tail(self, ctx: discord.ApplicationContext):
         embed = discord.Embed(
             title=f"Tails is now fluffing his tail.",
         )
@@ -24,7 +24,7 @@ class Tails(commands.Cog):
         await ctx.respond(embed=embed)
 
     @tails.command(description="Ask a local foxxo to ^W^ for you.")
-    async def localfox(self, ctx):
+    async def localfox(self, ctx: discord.ApplicationContext):
         embed = discord.Embed(
             title="^W^",
         )
@@ -34,7 +34,7 @@ class Tails(commands.Cog):
         await ctx.respond(embed=embed)
 
     @tails.command(description="POG")
-    async def pog(self, ctx):
+    async def pog(self, ctx: discord.ApplicationContext):
         embed = discord.Embed(
             title="",
         )

@@ -25,7 +25,7 @@ class Manage(commands.Cog):
     )
 
     @admin.command(description="Reload the bot's extensions")
-    async def reload(self, ctx):
+    async def reload(self, ctx: discord.ApplicationContext):
         self.bot._pending_application_commands = []
         for cog in [x[:-3] for x in os.listdir("commands") if x.endswith(".py")]:
             try:
@@ -38,19 +38,21 @@ class Manage(commands.Cog):
         await ctx.respond("✅ Done", ephemeral=True)
 
     @admin.command(description="Delete a message")
-    async def delmsg(self, ctx, id: Option(str, "ID to delete")):
+    async def delmsg(
+        self, ctx: discord.ApplicationContext, id: Option(str, "ID to delete")
+    ):
         await (await ctx.fetch_message(int(id))).delete()
         await ctx.respond("✅ Done", ephemeral=True)
 
     @admin.command(descriptioon="Sync commands to a guild")
-    async def sync(self, ctx):
+    async def sync(self, ctx: discord.ApplicationContext):
         await ctx.respond("✅ Done", ephemeral=True)
         await self.bot.sync_commands()
 
     @admin.command(descriptioon="execute from file")
     async def exec(
         self,
-        ctx,
+        ctx: discord.ApplicationContext,
         cmd: Option(str, "command to run as defined in file"),
         args: Option(str, "semicolon separated"),
     ):

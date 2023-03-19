@@ -18,7 +18,7 @@ class Main(commands.Cog):
     @slash_command(description="give out pets to various furballs")
     async def pet(
         self,
-        ctx,
+        ctx: discord.ApplicationContext,
         who: discord.Option(
             str,
             "Who do you want to pet?",
