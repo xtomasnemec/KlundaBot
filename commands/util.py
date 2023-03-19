@@ -49,15 +49,15 @@ class Util(commands.Cog):
         ctx: discord.ApplicationContext,
         term: Option(str, "The term to search for"),
     ):
-        res = await fetch_json(
+        search = await fetch_json(
             f"https://api.duckduckgo.com/?q={urlencode(term)}&format=json"
         )
 
-        if not (res["AbstractText"] == ""):
+        if not (search["AbstractText"] == ""):
             embed = discord.Embed(
-                title=res["Heading"],
-                description=res["AbstractText"],
-                url=res["AbstractURL"],
+                title=search["Heading"],
+                description=search["AbstractText"],
+                url=search["AbstractURL"],
             )
             embed.set_footer(text="SilvBot")
             await ctx.respond(embed=embed)
@@ -68,13 +68,13 @@ class Util(commands.Cog):
     async def urban(
         self, ctx: discord.ApplicationContext, word: Option(str, "The word to look up")
     ):
-        res = await fetch_json(
+        urban_def = await fetch_json(
             f"http://api.urbandictionary.com/v0/define?term={urlencode(word)}"
         )
 
-        if not (len(res["list"]) == 0):
-            word = res["list"][0]["word"]
-            defi = res["list"][0]["definition"]
+        if not (len(urban_def["list"]) == 0):
+            word = urban_def["list"][0]["word"]
+            defi = urban_def["list"][0]["definition"]
 
             defi = defi.replace("[", "")
             defi = defi.replace("]", "")
@@ -120,44 +120,47 @@ class Util(commands.Cog):
             ).strftime("%I:%M %p")
 
             embed = discord.Embed(
-                description="retreived @ {} (in local time)".format(date),
-                title="The weather for {}, {}".format(city_name, country_code),
+                description=f"retreived @ {date} (in local time)",
+                title=f"The weather for {city_name}, {country_code}",
             )
 
             embed.add_field(name="Condition", value=condition, inline=False)
 
+            celsius = lambda c: round(c - 273.15)
+            fahrenheit = lambda f: round((f - 273.15) * 1.8 + 32)
+
             embed.add_field(
                 name="Current Temperature",
-                value="{} °C\n{} °F".format(
-                    round(temperatures["temp"] - 273.15),
-                    round((temperatures["temp"] - 273.15) * 1.8 + 32),
+                value="{celsius} °C\n{fahrenheit} °F".format(
+                    celsius=celsius(temperatures["temp"]),
+                    fahrenheit=fahrenheit(temperatures["temp"]),
                 ),
                 inline=True,
             )
 
             embed.add_field(
                 name="Feels Like",
-                value="{} °C\n{} °F".format(
-                    round(temperatures["feels_like"] - 273.15),
-                    round((temperatures["feels_like"] - 273.15) * 1.8 + 32),
+                value="{celsius} °C\n{fahrenheit} °F".format(
+                    celsius=celsius(temperatures["feels_like"]),
+                    fahrenheit=fahrenheit(temperatures["feels_like"]),
                 ),
                 inline=True,
             )
 
             embed.add_field(
                 name="Min/Max Temperature",
-                value="{} - {} °C\n{} - {} °F".format(
-                    round(temperatures["temp_min"] - 273.15),
-                    round(temperatures["temp_max"] - 273.15),
-                    round((temperatures["temp_min"] - 273.15) * 1.8 + 32),
-                    round((temperatures["temp_max"] - 273.15) * 1.8 + 32),
+                value="{celsius_min} - {celsius_max} °C\n{fahrenheit_min} - {fahrenheit_max} °F".format(
+                    celsius_min=celsius(temperatures["temp_min"]),
+                    celsius_max=celsius(temperatures["temp_max"]),
+                    fahrenheit_min=fahrenheit(temperatures["temp_min"]),
+                    fahrenheit_max=fahrenheit(temperatures["temp_max"]),
                 ),
                 inline=True,
             )
 
             embed.add_field(
                 name="Sunrise & Sunset",
-                value="☀ {}\n🌙 {}".format(sunrise, sunset),
+                value=f"☀ {sunrise}\n🌙 {sunset}",
                 inline=False,
             )
 
@@ -173,7 +176,7 @@ class Util(commands.Cog):
     @util.command(description="Flip a coin!")
     async def coin(self, ctx: discord.ApplicationContext):
         await ctx.respond(
-            "It's {}.".format(random.choice(["Heads", "Tails"])),
+            f"It's {random.choice(['Heads', 'Tails'])}.",
         )
 
     @util.command(description="Get the latest stuff from Reddit!")
@@ -185,27 +188,27 @@ class Util(commands.Cog):
         if subreddit.startswith("r/"):
             subreddit = subreddit[2:]
 
-        res = await fetch_json(
+        reddit_data = await fetch_json(
             f"https://api.reddit.com/r/{urlencode(subreddit)}/hot?limit=100&raw_json=1"
         )
 
-        count = int(res["data"]["dist"])
+        count = int(reddit_data["data"]["dist"])
         if count == 0:
             await apologize(ctx, "No results found... Does the subreddit exist?")
             return
 
         post = random.randint(0, count - 1)
         embed = discord.Embed(
-            title=res["data"]["children"][post]["data"]["title"][0:256],
-            description="by " + res["data"]["children"][post]["data"]["author"],
+            title=reddit_data["data"]["children"][post]["data"]["title"][0:256],
+            description="by " + reddit_data["data"]["children"][post]["data"]["author"],
             url="https://reddit.com"
-            + res["data"]["children"][post]["data"]["permalink"],
+            + reddit_data["data"]["children"][post]["data"]["permalink"],
         )
         check = None
         try:
-            check = res["data"]["children"][post]["data"]["preview"]["images"][0][
-                "source"
-            ]["url"]
+            check = reddit_data["data"]["children"][post]["data"]["preview"]["images"][
+                0
+            ]["source"]["url"]
         except:
             pass
 
@@ -217,17 +220,17 @@ class Util(commands.Cog):
 
     @util.command(description="Search for a word's definition")
     async def define(self, ctx: discord.ApplicationContext, word):
-        res = await fetch_json(
+        definition = await fetch_json(
             f"https://api.dictionaryapi.dev/api/v2/entries/en/{urlencode(word)}"
         )
 
-        if "title" in res:
-            if res["title"] == "No Definitions Found":
+        if "title" in definition:
+            if definition["title"] == "No Definitions Found":
                 await apologize(ctx, "No definitions found...")
                 return
 
         embeds = []
-        for defn in res:
+        for defn in definition:
             embed = discord.Embed(title=defn["word"])
             for i, meaning in enumerate(defn["meanings"]):
                 embed.add_field(

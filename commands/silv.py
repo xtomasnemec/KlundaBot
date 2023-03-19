@@ -33,7 +33,7 @@ class Silv(commands.Cog):
             hug_from = self.bot.user.mention
         embed = discord.Embed(
             title="Aww, I love hugs! 😊",
-            description=("{} *hugs* {}".format(hug_from, user.mention)),
+            description=f"{hug_from} *hugs* {user.mention}",
             url="https://solar-socks.tumblr.com/post/620691516062597120/wanting-to-spread-some-love-and-positive-vibes",
         )
         embed.set_image(
