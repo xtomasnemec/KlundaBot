@@ -4,14 +4,14 @@ from discord.commands import SlashCommandGroup
 from discord.commands import Option
 import os
 import random
-import qrcode
-import time
-import json
-import aiohttp
 import datetime
-from util.urlencode import urlencode
 
+from util.urlencode import urlencode
 from util.error_message import apologize
+from util.qrcode import generate_qr_code
+from util.fetch import fetch_json
+
+owm_api_key = os.environ.get("owm_api_key")
 
 
 def setup(bot: discord.Bot):
@@ -22,46 +22,21 @@ class Util(commands.Cog):
     def __init__(self, bot: discord.Bot):
         self.bot = bot
 
-    g = SlashCommandGroup("util", "Miscellaneous utility commands")
+    util = SlashCommandGroup("util", "Miscellaneous utility commands")
 
-    @g.command(description="Give a random number from a range")
+    @util.command(description="Give a random number from a range")
     async def rand(self, ctx, min: Option(int, "The minimum number"), max: Option(int, "The maximum number")):
         await ctx.respond(random.randint(min, max))
 
-    @g.command(description="Generate a QR code from a piece of text")
+    @util.command(description="Generate a QR code from a piece of text")
     async def qr(self, ctx, text: Option(str, "The text to encode")):
-        def qr_encode(text):
-            qr = qrcode.QRCode(
-                version=1,
-                error_correction=qrcode.constants.ERROR_CORRECT_L,
-                box_size=10,
-                border=4,
-            )
-            qr.add_data(text)
-            qr.make(fit=True)
-            img = qr.make_image()
-            name = str(int(time.time())) + \
-                str(random.randint(1, 100000)) + ".png"
-            img.save(name)
-            return name
-
-        n = qr_encode(text)
-        await ctx.send(f"👀 QR code requested by {ctx.author.name}", file=discord.File(n))
+        qr_code = generate_qr_code(text)
+        await ctx.send(f"👀 QR code requested by {ctx.author.name}", file=discord.File(qr_code.name))
         await ctx.respond("✅ QR code generated.", ephemeral=True)
-        os.remove(n)
 
-    @g.command(description="Search for a term using DuckDuckGo")
+    @util.command(description="Search for a term using DuckDuckGo")
     async def ddg(self, ctx, term: Option(str, "The term to search for")):
-        async def get_ddg(term):
-            async with aiohttp.ClientSession() as session:
-                async with session.get(
-                    f'https://api.duckduckgo.com/?q={urlencode(term)}&format=json&pretty=1',
-                    headers={
-                        'User-Agent': 'SilverBot for Discord'
-                    }
-                ) as response:
-                    return json.loads(await response.text())
-        res = await get_ddg(term)
+        res = await fetch_json(f"https://api.duckduckgo.com/?q={urlencode(term)}&format=json")
 
         if not (res["AbstractText"] == ""):
             embed = discord.Embed(
@@ -74,19 +49,9 @@ class Util(commands.Cog):
         else:
             await apologize(ctx, "Aww, there are no results for that search.")
 
-    @g.command(description="Learn new English words with UrbanDictionary")
+    @util.command(description="Learn new English words with UrbanDictionary")
     async def urban(self, ctx, word: Option(str, "The word to look up")):
-        async def get_urban(word):
-            async with aiohttp.ClientSession() as session:
-                async with session.get(
-                    f'http://api.urbandictionary.com/v0/define?term={urlencode(word)}',
-                    headers={
-                        'Accept': 'application/json',
-                        'User-Agent': 'SilverBot for Discord'
-                    }
-                ) as response:
-                    return await response.json()
-        res = await get_urban(word)
+        res = await fetch_json(f'http://api.urbandictionary.com/v0/define?term={urlencode(word)}')
 
         if not (len(res["list"]) == 0):
             word = res["list"][0]["word"]
@@ -102,35 +67,20 @@ class Util(commands.Cog):
         else:
             await apologize(ctx, "Aww, there are no definitions for that word.")
 
-    @g.command(description="Get the weather for a location")
+    @util.command(description="Get the weather for a location")
     async def weather(
         self,
         ctx,
         location: Option(str, "The location to get the weather for")
     ):
-        async def get_weather(location):
-            async with aiohttp.ClientSession() as session:
-                async with session.get(
-                    f'https://api.openweathermap.org/data/2.5/weather?q={location}&appid=1ae200115efe68cbe99da9fce37951c5',
-                    headers={
-                        'Accept': 'application/json',
-                        'User-Agent': 'SilverBot for Discord'
-                    }
-                ) as response:
-                    return await response.json()
-
-        location = urlencode(location)
-        weather = await get_weather(location)
-        print(weather)
+        weather = await fetch_json(f'https://api.openweathermap.org/data/2.5/weather?q={urlencode(location)}&appid={owm_api_key}')
         error_code = weather["cod"]
 
         if error_code == "404":
             await apologize(ctx, "That city doesn't seem to exist.")
-            return
         else:
             condition = weather["weather"][0]["main"]
             icon = weather["weather"][0]["icon"]
-            description = weather["weather"][0]["description"]
             temperatures = weather["main"]
 
             city_name = weather["name"]
@@ -194,53 +144,40 @@ class Util(commands.Cog):
                 inline=False
             )
 
-            embed.set_thumbnail(
-                url="http://openweathermap.org/img/w/{}".format(
-                    icon + ".png")
-            )
+            embed.set_thumbnail(url=f"http://openweathermap.org/img/w/{icon}.png")
 
             embed.set_footer(text="SilvBot")
-
             await ctx.respond(embed=embed)
 
-    @g.command(description="Check Silver's reaction time")
+    @util.command(description="Check Silver's reaction time")
     async def ping(self, ctx):
         await ctx.respond(
             f"Pong! {self.bot.latency}",
             ephemeral=True
         )
 
-    @g.command(description="Flip a coin!")
+    @util.command(description="Flip a coin!")
     async def coin(self, ctx):
         await ctx.respond(
             "It's {}.".format(random.choice(["Heads", "Tails"])),
         )
 
-    @g.command(description="Get the latest stuff from Reddit!")
+    @util.command(description="Get the latest stuff from Reddit!")
     async def reddit(
         self,
         ctx,
         subreddit: Option(str, "The subreddit to get things from")
     ):
-
-        async def get_reddit(subreddit):
-            async with aiohttp.ClientSession() as session:
-                async with session.get(
-                    f'https://api.reddit.com/r/{urlencode(subreddit)}/hot?limit=100&raw_json=1',
-                    headers={
-                        'Accept': 'application/json',
-                        'User-Agent': 'SilverBot for Discord'
-                    }
-                ) as response:
-                    return await response.json()
-
         if subreddit.startswith("r/"):
             subreddit = subreddit[2:]
-        res = await get_reddit(subreddit)
+
+        res = await fetch_json(f'https://api.reddit.com/r/{urlencode(subreddit)}/hot?limit=100&raw_json=1')
+
         count = int(res["data"]["dist"])
         if count == 0:
-            await apologize(ctx,"No results found... Does the subreddit exist?")
+            await apologize(ctx, "No results found... Does the subreddit exist?")
             return
+
         post = random.randint(0, count - 1)
         embed = discord.Embed(
             title=res["data"]["children"][post]["data"]["title"][0:256],
@@ -262,25 +199,16 @@ class Util(commands.Cog):
 
         await ctx.respond(embed=embed)
 
-    @g.command(description="Search for a word's definition")
+    @util.command(description="Search for a word's definition")
     async def define(self, ctx, word):
-        async def get_dict(word):
-            async with aiohttp.ClientSession() as session:
-                async with session.get(
-                    f'https://api.dictionaryapi.dev/api/v2/entries/en/{urlencode(word)}',
-                    headers={
-                        'User-Agent': 'SilverBot for Discord'
-                    }
-                ) as response:
-                    return json.loads(await response.text())
-        res = await get_dict(word)
-        embeds = []
+        res = await fetch_json(f'https://api.dictionaryapi.dev/api/v2/entries/en/{urlencode(word)}')
 
         if "title" in res:
             if res["title"] == "No Definitions Found":
                 await apologize(ctx, "No definitions found...")
                 return
 
+        embeds = []
         for defn in res:
             embed = discord.Embed(title=defn["word"])
             for i, meaning in enumerate(defn["meanings"]):

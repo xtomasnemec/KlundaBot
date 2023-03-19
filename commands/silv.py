@@ -6,21 +6,24 @@ import random
 
 import data.spook
 
+
 def setup(bot: discord.Bot):
     importlib.reload(data.spook)
-    instance = Silvy(bot)
-    bot.add_cog(instance)
-    bot.user_command(name="Hug this user")(instance._hug)
-    bot.user_command(name="Wish this user a happy birthday")(instance._bday)
+    cog = Silv(bot)
+    bot.add_cog(cog)
+
+    # Manually trigger decorators.
+    bot.user_command(name="Hug this user")(cog._hug)
+    bot.user_command(name="Wish this user a happy birthday")(cog._bday)
 
 
-class Silvy(commands.Cog):
+class Silv(commands.Cog):
     def __init__(self, bot: discord.Bot):
         self.bot = bot
 
-    g = SlashCommandGroup("silv", "Silver related fluff")
+    silv = SlashCommandGroup("silv", "Silver the Hedgehog fluff")
 
-    @g.command(description="Gift somebody a warm hug!")
+    @silv.command(description="Gift somebody a warm hug!")
     async def hug(self, ctx, user: discord.User):
         await self._hug(ctx, user)
 
@@ -40,7 +43,7 @@ class Silvy(commands.Cog):
         embed.set_footer(text="SilvBot")
         await ctx.respond(embed=embed)
 
-    @g.command(description="Wish somebody a happy birthday!")
+    @silv.command(description="Wish somebody a happy birthday!")
     async def bday(self, ctx, user: discord.User):
         await self._bday(ctx, user)
 
@@ -54,9 +57,7 @@ class Silvy(commands.Cog):
         embed.set_footer(text="SilvBot")
         await ctx.respond(embed=embed)
 
-    @g.command(
-        description="IT'S NO USE!"
-    )
+    @silv.command(description="IT'S NO USE!")
     async def snouse(self, ctx):
         embed = discord.Embed(
             title="It's no use!",
@@ -67,7 +68,7 @@ class Silvy(commands.Cog):
         embed.set_footer(text="SilvBot")
         await ctx.respond(embed=embed)
 
-    @g.command(description="Send some spooky art for Spooktober")
+    @silv.command(description="Send some spooky art for Spooktober")
     async def spook(self, ctx):
         embed = discord.Embed(
             title="Boo! Happy Halloween!",
