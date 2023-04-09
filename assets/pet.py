@@ -1,6 +1,8 @@
 characters = [
+    # Hoisted characters
     "Silver",
     "Barry",
+    # The rest is ordered alphabetically
     "Bean",
     "Blaze",
     "Cream",
