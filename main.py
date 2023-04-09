@@ -1,11 +1,11 @@
 import asyncio
+import os
 import discord
 from discord.ext import tasks
-import os
 from dotenv import load_dotenv
 
-from util.error_message import panic
-from data.status_messages import status_messages
+from utils.error_message import panic
+from assets.status_messages import status_messages
 
 load_dotenv()
 

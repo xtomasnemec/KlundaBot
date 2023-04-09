@@ -1,0 +1,15 @@
+characters = [
+    "Silver",
+    "Barry",
+    "Bean",
+    "Blaze",
+    "Cream",
+    "Gamma",
+    "Lanolin",
+    "Ray",
+    "Shadow",
+    "Tails",
+    "Tangle",
+    "Vector",
+    "Whisper",
+]

@@ -4,11 +4,11 @@ from discord.ext import commands
 from discord.commands import SlashCommandGroup
 import random
 
-import data.spook
+import assets.spook
 
 
 def setup(bot: discord.Bot):
-    importlib.reload(data.spook)
+    importlib.reload(assets.spook)
     cog = Silv(bot)
     bot.add_cog(cog)
 
@@ -66,7 +66,7 @@ class Silv(commands.Cog):
         embed = discord.Embed(
             title="Boo! Happy Halloween!",
         )
-        url = random.choice(data.spook.spook)
+        url = random.choice(assets.spook.spook)
         print("spook:", url)
         embed.set_image(url=url)
         embed.set_footer(text="SilvBot")

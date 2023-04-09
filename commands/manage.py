@@ -1,10 +1,10 @@
-import importlib
-from util.error_message import apologize
 import os
 import discord
 from discord.ext import commands
 from discord.commands import SlashCommandGroup
 from discord.commands import Option
+
+from utils.error_message import apologize
 
 admin_guild_id = int(os.environ.get("admin_guild_id", "0"))
 
@@ -48,19 +48,6 @@ class Manage(commands.Cog):
     async def sync(self, ctx: discord.ApplicationContext):
         await ctx.respond("✅ Done", ephemeral=True)
         await self.bot.sync_commands()
-
-    @admin.command(descriptioon="execute from file")
-    async def exec(
-        self,
-        ctx: discord.ApplicationContext,
-        cmd: Option(str, "command to run as defined in file"),
-        args: Option(str, "semicolon separated"),
-    ):
-        import exec.exec
-
-        importlib.reload(exec.exec)
-        fun = getattr(exec.exec, cmd)
-        await fun(ctx, args.split(";"))
 
     @commands.Cog.listener()
     async def on_application_command_error(

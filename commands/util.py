@@ -6,10 +6,10 @@ import os
 import random
 import datetime
 
-from util.urlencode import urlencode
-from util.error_message import apologize
-from util.qrcode import generate_qr_code
-from util.fetch import fetch_json
+from utils.urlencode import urlencode
+from utils.error_message import apologize
+from utils.qrcode import generate_qr_code
+from utils.fetch import fetch_json
 
 owm_api_key = os.environ.get("owm_api_key")
 
