@@ -48,6 +48,6 @@ class Main(commands.Cog):
             title=f"{ctx.author.name} is petting {pet_who}!",
         )
         embed.set_image(
-            url=f"https://raw.githubusercontent.com/Silver-Volt4/SilverBot/master/assets/pet/{pet_who.lower()}.gif"
+            url=f"https://raw.githubusercontent.com/Silver-Volt4/SilverBot/main/assets/pet/{pet_who.lower()}.gif"
         )
         await ctx.respond(embed=embed)
