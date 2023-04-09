@@ -1,6 +1,7 @@
 pet = [
     ("Silver", "https://i.imgur.com/2LDe9yn.gif"),
     ("Barry", "https://media.discordapp.net/attachments/865374572789760030/1091786376694992997/Nepojmenovane.gif"),
+    ("Bean", "https://media.discordapp.net/attachments/801348520496988160/1093247094162198639/Nepojmenovane.gif"),
     ("Blaze", "https://media.discordapp.net/attachments/966722183546167357/1070829564328169472/480518f2-8d1c-4f1f-95b9-240623bc586c.gif"),
     ("Cream", "https://media.discordapp.net/attachments/865374572789760030/1026365050086248559/f272c3fe-02f0-4508-96d6-83317cabeb19.gif"),
     ("Gamma", "https://media.discordapp.net/attachments/865374572789760030/1043933710472458340/d734869b-e890-4acb-9ebd-b7a07eac64a7.gif"),
