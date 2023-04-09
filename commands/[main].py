@@ -6,6 +6,7 @@ from discord.ext import commands
 
 import assets.pet
 
+
 def setup(bot: discord.Bot):
     importlib.reload(assets.pet)
     bot.add_cog(Main(bot))
@@ -32,5 +33,7 @@ class Main(commands.Cog):
         embed = discord.Embed(
             title=f"{ctx.author.name} is petting {pet_who}!",
         )
-        embed.set_image(url=f"https://raw.githubusercontent.com/Silver-Volt4/SilverBot/main/assets/pet_gifs/{pet_who.lower()}.gif")
+        embed.set_image(
+            url=f"https://raw.githubusercontent.com/Silver-Volt4/SilverBot/master/assets/pet/{pet_who.lower()}.gif"
+        )
         await ctx.respond(embed=embed)
