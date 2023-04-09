@@ -28,10 +28,10 @@ class Util(commands.Cog):
     async def rand(
         self,
         ctx: discord.ApplicationContext,
-        min: Option(int, "The minimum number"),
-        max: Option(int, "The maximum number"),
+        min_n: Option(int, "The minimum number"),
+        max_n: Option(int, "The maximum number"),
     ):
-        await ctx.respond(random.randint(min, max))
+        await ctx.respond(random.randint(min_n, max_n))
 
     @util.command(description="Generate a QR code from a piece of text")
     async def qr(
@@ -209,7 +209,7 @@ class Util(commands.Cog):
             check = reddit_data["data"]["children"][post]["data"]["preview"]["images"][
                 0
             ]["source"]["url"]
-        except:
+        except KeyError:
             pass
 
         if check:

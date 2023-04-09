@@ -16,7 +16,7 @@ class Tails(commands.Cog):
     @tails.command(description="make tails fluff his tail")
     async def tail(self, ctx: discord.ApplicationContext):
         embed = discord.Embed(
-            title=f"Tails is now fluffing his tail.",
+            title="Tails is now fluffing his tail.",
         )
         embed.set_image(
             url="https://media.discordapp.net/attachments/865374572789760030/1017083766881132574/modern_tails_sonic_generations_petting_namesakes_gif.gif"

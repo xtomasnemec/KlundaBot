@@ -2,7 +2,6 @@ import os
 import discord
 from discord.ext import commands
 from discord.commands import SlashCommandGroup
-from discord.commands import Option
 
 from utils.error_message import apologize
 
@@ -26,22 +25,17 @@ class Manage(commands.Cog):
 
     @admin.command(description="Reload the bot's extensions")
     async def reload(self, ctx: discord.ApplicationContext):
-        self.bot._pending_application_commands = []
         for cog in [x[:-3] for x in os.listdir("commands") if x.endswith(".py")]:
             try:
                 self.bot.unload_extension(f"commands.{cog}")
-            except:
+            except (discord.ExtensionNotLoaded, discord.ExtensionNotFound):
                 pass
+
+        # pylint: disable=protected-access
+        self.bot._pending_application_commands = []
 
         for cog in [x[:-3] for x in os.listdir("commands") if x.endswith(".py")]:
             self.bot.load_extension(f"commands.{cog}")
-        await ctx.respond("✅ Done", ephemeral=True)
-
-    @admin.command(description="Delete a message")
-    async def delmsg(
-        self, ctx: discord.ApplicationContext, id: Option(str, "ID to delete")
-    ):
-        await (await ctx.fetch_message(int(id))).delete()
         await ctx.respond("✅ Done", ephemeral=True)
 
     @admin.command(descriptioon="Sync commands to a guild")

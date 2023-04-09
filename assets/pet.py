@@ -3,6 +3,7 @@ characters = [
     "Silver",
     "Barry",
     # The rest is ordered alphabetically
+    "Amy",
     "Bean",
     "Blaze",
     "Cream",

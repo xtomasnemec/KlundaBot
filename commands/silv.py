@@ -13,8 +13,8 @@ def setup(bot: discord.Bot):
     bot.add_cog(cog)
 
     # Manually trigger decorators.
-    bot.user_command(name="Hug this user")(cog._hug)
-    bot.user_command(name="Wish this user a happy birthday")(cog._bday)
+    bot.user_command(name="Hug this user")(cog.hug)
+    bot.user_command(name="Wish this user a happy birthday")(cog.bday)
 
 
 class Silv(commands.Cog):
@@ -23,11 +23,11 @@ class Silv(commands.Cog):
 
     silv = SlashCommandGroup("silv", "Silver the Hedgehog fluff")
 
-    @silv.command(description="Gift somebody a warm hug!")
-    async def hug(self, ctx: discord.ApplicationContext, user: discord.User):
-        await self._hug(ctx, user)
-
+    @silv.command(name="hug", description="Gift somebody a warm hug!")
     async def _hug(self, ctx: discord.ApplicationContext, user: discord.User):
+        await self.hug(ctx, user)
+
+    async def hug(self, ctx: discord.ApplicationContext, user: discord.User):
         hug_from = ctx.author.mention
         if user == ctx.author:
             hug_from = self.bot.user.mention
@@ -42,11 +42,11 @@ class Silv(commands.Cog):
         embed.set_footer(text="SilvBot")
         await ctx.respond(embed=embed)
 
-    @silv.command(description="Wish somebody a happy birthday!")
-    async def bday(self, ctx: discord.ApplicationContext, user: discord.User):
-        await self._bday(ctx, user)
-
+    @silv.command(name="bday", description="Wish somebody a happy birthday!")
     async def _bday(self, ctx: discord.ApplicationContext, user: discord.User):
+        await self.bday(ctx, user)
+
+    async def bday(self, ctx: discord.ApplicationContext, user: discord.User):
         embed = discord.Embed(title=f"Happy birthday, {str(user)}!")
         embed.set_image(url="https://i.imgur.com/Kb9sajK.png")
         embed.set_footer(text="SilvBot")
