@@ -1,13 +1,21 @@
+"""
+silv.py
+Slash Commands that represent Silver the Hedgehog memes and other stuff.
+"""
 import importlib
+import random
+
 import discord
 from discord.ext import commands
 from discord.commands import SlashCommandGroup
-import random
 
 import assets.spook
 
 
 def setup(bot: discord.Bot):
+    """
+    Code to run on cog import.
+    """
     importlib.reload(assets.spook)
     cog = Silv(bot)
     bot.add_cog(cog)
@@ -18,6 +26,10 @@ def setup(bot: discord.Bot):
 
 
 class Silv(commands.Cog):
+    """
+    Slash Commands that represent Silver the Hedgehog memes and other stuff.
+    """
+
     def __init__(self, bot: discord.Bot):
         self.bot = bot
 
@@ -28,6 +40,9 @@ class Silv(commands.Cog):
         await self.hug(ctx, user)
 
     async def hug(self, ctx: discord.ApplicationContext, user: discord.User):
+        """
+        Sends a hug to a specified user.
+        """
         hug_from = ctx.author.mention
         if user == ctx.author:
             hug_from = self.bot.user.mention
@@ -47,6 +62,9 @@ class Silv(commands.Cog):
         await self.bday(ctx, user)
 
     async def bday(self, ctx: discord.ApplicationContext, user: discord.User):
+        """
+        Sends a birthday wish to a specified user.
+        """
         embed = discord.Embed(title=f"Happy birthday, {str(user)}!")
         embed.set_image(url="https://i.imgur.com/Kb9sajK.png")
         embed.set_footer(text="SilvBot")
@@ -54,6 +72,9 @@ class Silv(commands.Cog):
 
     @silv.command(description="IT'S NO USE!")
     async def snouse(self, ctx: discord.ApplicationContext):
+        """
+        Sends IT'S NO USE meme.
+        """
         embed = discord.Embed(
             title="It's no use!", url="https://www.youtube.com/watch?v=Oq8AgIS3ZgU"
         )
@@ -63,6 +84,9 @@ class Silv(commands.Cog):
 
     @silv.command(description="Send some spooky art for Spooktober")
     async def spook(self, ctx: discord.ApplicationContext):
+        """
+        Sends Halloween art.
+        """
         embed = discord.Embed(
             title="Boo! Happy Halloween!",
         )

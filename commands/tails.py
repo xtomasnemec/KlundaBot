@@ -1,13 +1,23 @@
+"""
+tails.py
+Slash Commands that represent Tails the Fox memes and other stuff.
+"""
 import discord
 from discord.ext import commands
 from discord.commands import SlashCommandGroup
 
 
 def setup(bot: discord.Bot):
+    """
+    Code to run on cog import.
+    """
     bot.add_cog(Tails(bot))
 
 
 class Tails(commands.Cog):
+    """
+    Slash Commands that represent Tails the Fox memes and other stuff.
+    """
     def __init__(self, bot: discord.Bot):
         self.bot = bot
 
@@ -15,6 +25,9 @@ class Tails(commands.Cog):
 
     @tails.command(description="make tails fluff his tail")
     async def tail(self, ctx: discord.ApplicationContext):
+        """
+        Sends a gif in chat.
+        """
         embed = discord.Embed(
             title="Tails is now fluffing his tail.",
         )
@@ -25,6 +38,9 @@ class Tails(commands.Cog):
 
     @tails.command(description="Ask a local foxxo to ^W^ for you.")
     async def localfox(self, ctx: discord.ApplicationContext):
+        """
+        Sends an image in chat.
+        """
         embed = discord.Embed(
             title="^W^",
         )
@@ -35,6 +51,9 @@ class Tails(commands.Cog):
 
     @tails.command(description="POG")
     async def pog(self, ctx: discord.ApplicationContext):
+        """
+        Sends an image in chat.
+        """
         embed = discord.Embed(
             title="",
         )

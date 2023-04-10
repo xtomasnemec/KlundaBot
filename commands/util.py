@@ -1,24 +1,37 @@
+"""
+util.py
+Commands that represent useful tools.
+"""
+import datetime
+import random
+import os
+
 import discord
 from discord.ext import commands
 from discord.commands import SlashCommandGroup
 from discord.commands import Option
-import os
-import random
-import datetime
 
 from utils.urlencode import urlencode
 from utils.error_message import apologize
 from utils.qrcode import generate_qr_code
 from utils.fetch import fetch_json
+from utils.unit_conversions import to_celsius, to_fahrenheit
 
 owm_api_key = os.environ.get("owm_api_key")
 
 
 def setup(bot: discord.Bot):
+    """
+    Code to run on cog import.
+    """
     bot.add_cog(Util(bot))
 
 
 class Util(commands.Cog):
+    """
+    Commands that represent useful tools.
+    """
+
     def __init__(self, bot: discord.Bot):
         self.bot = bot
 
@@ -31,12 +44,18 @@ class Util(commands.Cog):
         min_n: Option(int, "The minimum number"),
         max_n: Option(int, "The maximum number"),
     ):
+        """
+        Sends a random number in chat.
+        """
         await ctx.respond(random.randint(min_n, max_n))
 
-    @util.command(description="Generate a QR code from a piece of text")
-    async def qr(
+    @util.command(name="qr", description="Generate a QR code from a piece of text")
+    async def qr_code(
         self, ctx: discord.ApplicationContext, text: Option(str, "The text to encode")
     ):
+        """
+        Generates a QR code and sends it in chat as a message.
+        """
         qr_code = generate_qr_code(text)
         await ctx.send(
             f"👀 QR code requested by {ctx.author.name}", file=discord.File(qr_code.name)
@@ -49,11 +68,14 @@ class Util(commands.Cog):
         ctx: discord.ApplicationContext,
         term: Option(str, "The term to search for"),
     ):
+        """
+        Searches for a summary for a term and sends results.
+        """
         search = await fetch_json(
             f"https://api.duckduckgo.com/?q={urlencode(term)}&format=json"
         )
 
-        if not (search["AbstractText"] == ""):
+        if not search["AbstractText"] == "":
             embed = discord.Embed(
                 title=search["Heading"],
                 description=search["AbstractText"],
@@ -68,11 +90,14 @@ class Util(commands.Cog):
     async def urban(
         self, ctx: discord.ApplicationContext, word: Option(str, "The word to look up")
     ):
+        """
+        Searches a word with UrbanDictionary API and sends the result.
+        """
         urban_def = await fetch_json(
             f"http://api.urbandictionary.com/v0/define?term={urlencode(word)}"
         )
 
-        if not (len(urban_def["list"]) == 0):
+        if not len(urban_def["list"]) == 0:
             word = urban_def["list"][0]["word"]
             defi = urban_def["list"][0]["definition"]
 
@@ -92,6 +117,9 @@ class Util(commands.Cog):
         ctx: discord.ApplicationContext,
         location: Option(str, "The location to get the weather for"),
     ):
+        """
+        Gets weather data for a location and sends it.
+        """
         weather = await fetch_json(
             f"https://api.openweathermap.org/data/2.5/weather?q={urlencode(location)}&appid={owm_api_key}"
         )
@@ -126,14 +154,11 @@ class Util(commands.Cog):
 
             embed.add_field(name="Condition", value=condition, inline=False)
 
-            celsius = lambda c: round(c - 273.15)
-            fahrenheit = lambda f: round((f - 273.15) * 1.8 + 32)
-
             embed.add_field(
                 name="Current Temperature",
                 value="{celsius} °C\n{fahrenheit} °F".format(
-                    celsius=celsius(temperatures["temp"]),
-                    fahrenheit=fahrenheit(temperatures["temp"]),
+                    celsius=to_celsius(temperatures["temp"]),
+                    fahrenheit=to_fahrenheit(temperatures["temp"]),
                 ),
                 inline=True,
             )
@@ -141,8 +166,8 @@ class Util(commands.Cog):
             embed.add_field(
                 name="Feels Like",
                 value="{celsius} °C\n{fahrenheit} °F".format(
-                    celsius=celsius(temperatures["feels_like"]),
-                    fahrenheit=fahrenheit(temperatures["feels_like"]),
+                    celsius=to_celsius(temperatures["feels_like"]),
+                    fahrenheit=to_fahrenheit(temperatures["feels_like"]),
                 ),
                 inline=True,
             )
@@ -150,10 +175,10 @@ class Util(commands.Cog):
             embed.add_field(
                 name="Min/Max Temperature",
                 value="{celsius_min} - {celsius_max} °C\n{fahrenheit_min} - {fahrenheit_max} °F".format(
-                    celsius_min=celsius(temperatures["temp_min"]),
-                    celsius_max=celsius(temperatures["temp_max"]),
-                    fahrenheit_min=fahrenheit(temperatures["temp_min"]),
-                    fahrenheit_max=fahrenheit(temperatures["temp_max"]),
+                    celsius_min=to_celsius(temperatures["temp_min"]),
+                    celsius_max=to_celsius(temperatures["temp_max"]),
+                    fahrenheit_min=to_fahrenheit(temperatures["temp_min"]),
+                    fahrenheit_max=to_fahrenheit(temperatures["temp_max"]),
                 ),
                 inline=True,
             )
@@ -171,10 +196,16 @@ class Util(commands.Cog):
 
     @util.command(description="Check Silver's reaction time")
     async def ping(self, ctx: discord.ApplicationContext):
+        """
+        Sends bot latency.
+        """
         await ctx.respond(f"Pong! {self.bot.latency}", ephemeral=True)
 
     @util.command(description="Flip a coin!")
     async def coin(self, ctx: discord.ApplicationContext):
+        """
+        Decides between two random values.
+        """
         await ctx.respond(
             f"It's {random.choice(['Heads', 'Tails'])}.",
         )
@@ -185,6 +216,9 @@ class Util(commands.Cog):
         ctx: discord.ApplicationContext,
         subreddit: Option(str, "The subreddit to get things from"),
     ):
+        """
+        Downloads a random post from a subreddit and returns it.
+        """
         if subreddit.startswith("r/"):
             subreddit = subreddit[2:]
 
@@ -220,6 +254,9 @@ class Util(commands.Cog):
 
     @util.command(description="Search for a word's definition")
     async def define(self, ctx: discord.ApplicationContext, word):
+        """
+        Searches for a word and sends its definiton in chat.
+        """
         definition = await fetch_json(
             f"https://api.dictionaryapi.dev/api/v2/entries/en/{urlencode(word)}"
         )
