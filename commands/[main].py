@@ -36,18 +36,20 @@ class Main(commands.Cog):
             "Who do you want to pet?",
             choices=[
                 OptionChoice(name=character, value=str(index))
-                for index, character in enumerate(assets.pet.characters)
+                for index, character in enumerate(assets.pet.get_list())
             ],
         ),
     ):
         """
         Command that sends a specified petting gif.
         """
-        pet_who: str = assets.pet.characters[int(who)]
+        url_slug, pet_who, comment = assets.pet.characters[int(who)]
         embed = discord.Embed(
             title=f"{ctx.author.name} is petting {pet_who}!",
         )
         embed.set_image(
-            url=f"https://raw.githubusercontent.com/Silver-Volt4/SilverBot/main/assets/pet/{pet_who.lower()}.gif"
+            url=f"https://raw.githubusercontent.com/Silver-Volt4/SilverBot/main/assets/pet/{url_slug}.gif"
         )
+        if comment:
+            embed.set_footer(text=comment)
         await ctx.respond(embed=embed)
