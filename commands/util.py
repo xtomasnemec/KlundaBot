@@ -57,10 +57,12 @@ class Util(commands.Cog):
         Generates a QR code and sends it in chat as a message.
         """
         qr_code = generate_qr_code(text)
+        file_name = qr_code.name
         await ctx.send(
-            f"👀 QR code requested by {ctx.author.name}", file=discord.File(qr_code.name)
+            f"👀 QR code requested by {ctx.author.name}", file=discord.File(file_name)
         )
         await ctx.respond("✅ QR code generated.", ephemeral=True)
+        os.remove(file_name)
 
     @util.command(description="Search for a term using DuckDuckGo")
     async def ddg(
