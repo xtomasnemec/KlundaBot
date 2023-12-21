@@ -7,6 +7,7 @@ characters = [
     ["bean", "Bean", None],
     ["blaze", "Blaze", None],
     ["cream", "Cream", None],
+    ["eggman", "Eggman", None],
     ["gamma", "Gamma", None],
     ["lanolin", "Lanolin", None],
     ["quickstrike", "Quickstrike", "OC by @shadzydow"],
