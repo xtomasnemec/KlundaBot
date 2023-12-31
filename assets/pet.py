@@ -13,6 +13,7 @@ characters = [
     ["quickstrike", "Quickstrike", "OC by @shadzydow"],
     ["ray", "Ray", None],
     ["shadow", "Shadow", None],
+    ["sharp", "Sharp", "OC by @thesupershotgun"],
     ["sonic", "Sonic", None],
     ["tails", "Tails", None],
     ["tangle", "Tangle", None],
