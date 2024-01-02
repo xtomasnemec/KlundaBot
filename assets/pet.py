@@ -8,6 +8,7 @@ characters = [
     ["blaze", "Blaze", None],
     ["cream", "Cream", None],
     ["eggman", "Eggman", None],
+    ["gadget", "Gadget", None],
     ["gamma", "Gamma", None],
     ["lanolin", "Lanolin", None],
     ["quickstrike", "Quickstrike", "@shadzydow's Original Character. Added on request."],
