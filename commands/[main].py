@@ -45,7 +45,7 @@ class Main(commands.Cog):
         """
         url_slug, pet_who, comment = assets.pet.characters[int(who)]
         embed = discord.Embed(
-            title=f"{ctx.author.name} is petting {pet_who}!",
+            title=f"{ctx.author.display_name} is petting {pet_who}!",
         )
         embed.set_image(
             url=f"https://raw.githubusercontent.com/Silver-Volt4/SilverBot/main/assets/pet/{url_slug}.gif"

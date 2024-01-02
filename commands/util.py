@@ -59,7 +59,7 @@ class Util(commands.Cog):
         qr_code = generate_qr_code(text)
         file_name = qr_code.name
         await ctx.send(
-            f"👀 QR code requested by {ctx.author.name}", file=discord.File(file_name)
+            f"👀 QR code requested by {ctx.author.display_name}", file=discord.File(file_name)
         )
         await ctx.respond("✅ QR code generated.", ephemeral=True)
         os.remove(file_name)
