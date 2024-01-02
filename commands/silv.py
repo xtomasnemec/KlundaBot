@@ -91,7 +91,6 @@ class Silv(commands.Cog):
             title="Boo! Happy Halloween!",
         )
         url = random.choice(assets.spook.spook)
-        print("spook:", url)
         embed.set_image(url=url)
         embed.set_footer(text="SilvBot")
         await ctx.respond(embed=embed)

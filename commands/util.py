@@ -96,7 +96,7 @@ class Util(commands.Cog):
         urban_def = await fetch_json(
             f"http://api.urbandictionary.com/v0/define?term={urlencode(word)}"
         )
-
+        
         if not len(urban_def["list"]) == 0:
             word = urban_def["list"][0]["word"]
             defi = urban_def["list"][0]["definition"]
