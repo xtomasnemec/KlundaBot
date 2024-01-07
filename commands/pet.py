@@ -25,6 +25,7 @@ character = [
     ["eggman", "Eggman"],
     ["gadget", "Gadget"],
     ["gamma", "Gamma"],
+    ["kit", "Kit"],
     ["lanolin", "Lanolin"],
     ["ray", "Ray"],
     ["shadow", "Shadow"],
@@ -39,6 +40,7 @@ oc = [
     ["quickstrike", "Quickstrike", "shadzydow"],
     ["sharp", "Sharp", "thesupershotgun"],
     ["fick", "Fick", "damiancruz123"],
+    ["sank", "Sank", "biggiemater23"],
 ]
 
 
@@ -116,7 +118,10 @@ class Pet(commands.Cog):
         self,
         ctx: discord.ApplicationContext,
         who: Option(str, "Name of this character"),
-        image: Option(str, "Image of this character. Must be a URL, e.g. DM the image to SilverBot and then copy the link"),
+        image: Option(
+            str,
+            "Image of this character. Must be a URL, e.g. DM the image to SilverBot and then copy the link",
+        ),
     ):
         """
         Command that sends a specified petting gif.
@@ -126,4 +131,7 @@ class Pet(commands.Cog):
         await self.requests_channel.send(
             f"new /pet request\nfrom: {ctx.author.name} {ctx.author.mention}\nname: {who}\n{image}"
         )
-        await ctx.respond("Your request was sent to me. I'll try to process it as fast as I can.\nDo not message me to speed things up. I have a life, too.\nIf we share a server, I will contact you when your character has been added.", ephemeral=True)
+        await ctx.respond(
+            "Your request was sent to me. I'll try to process it as fast as I can.\nDo not message me to speed things up. I have a life, too.\nIf we share a server, I will contact you when your character has been added.",
+            ephemeral=True,
+        )
