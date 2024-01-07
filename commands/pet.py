@@ -11,6 +11,7 @@ from discord.commands import SlashCommandGroup, OptionChoice, Option
 
 from utils.error_message import apologize
 
+requests_channel = int(os.environ.get("requests_channel", "0"))
 
 character = [
     # Hoisted characters
@@ -54,6 +55,7 @@ def setup(bot):
 class Pet(commands.Cog):
     def __init__(self, bot: discord.Bot):
         self.bot = bot
+        self.requests_channel: discord.GuildChannel = None
 
     pet = SlashCommandGroup("pet", "give out pets to various furballs")
 
@@ -107,3 +109,20 @@ class Pet(commands.Cog):
         )
         embed.set_footer(text=f"@{owner}'s Original Character. Added on request.")
         await ctx.respond(embed=embed)
+
+    @pet.command(description="request a character (canon or oc)")
+    async def request(
+        self,
+        ctx: discord.ApplicationContext,
+        who: Option(str, "Name of this character"),
+        image: Option(str, "Image of this character. Must be a URL, e.g. DM the image to SilverBot and then copy the link"),
+    ):
+        """
+        Command that sends a specified petting gif.
+        """
+        if not self.requests_channel:
+            self.requests_channel = await self.bot.fetch_channel(requests_channel)
+        await self.requests_channel.send(
+            f"new /pet request\nfrom: {ctx.author.name} {ctx.author.mention}\nname: {who}\n{image}"
+        )
+        await ctx.respond("Your request was sent to me. I'll try to process it as fast as I can.\nDo not message me to speed things up. I have a life, too.\nIf we share a server, I will contact you when your character has been added.", ephemeral=True)
