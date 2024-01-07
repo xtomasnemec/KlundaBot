@@ -38,6 +38,7 @@ character = [
 oc = [
     ["quickstrike", "Quickstrike", "shadzydow"],
     ["sharp", "Sharp", "thesupershotgun"],
+    ["fick", "Fick", "damiancruz123"],
 ]
 
 
