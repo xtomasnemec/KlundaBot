@@ -59,7 +59,8 @@ class Util(commands.Cog):
         qr_code = generate_qr_code(text)
         file_name = qr_code.name
         await ctx.send(
-            f"👀 QR code requested by {ctx.author.display_name}", file=discord.File(file_name)
+            f"👀 QR code requested by {ctx.author.display_name}",
+            file=discord.File(file_name),
         )
         await ctx.respond("✅ QR code generated.", ephemeral=True)
         os.remove(file_name)
@@ -98,7 +99,7 @@ class Util(commands.Cog):
         urban_def = await fetch_json(
             f"http://api.urbandictionary.com/v0/define?term={urlencode(word)}"
         )
-        
+
         if not len(urban_def["list"]) == 0:
             word = urban_def["list"][0]["word"]
             defi = urban_def["list"][0]["definition"]

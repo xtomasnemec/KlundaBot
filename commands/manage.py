@@ -62,7 +62,7 @@ class Manage(commands.Cog):
         """
         await ctx.respond("✅ Done", ephemeral=True)
         await self.bot.sync_commands()
-    
+
     @commands.Cog.listener()
     async def on_application_command_error(
         self, ctx: discord.ApplicationContext, error: discord.DiscordException

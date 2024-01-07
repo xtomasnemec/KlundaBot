@@ -18,6 +18,7 @@ class Tails(commands.Cog):
     """
     Slash Commands that represent Tails the Fox memes and other stuff.
     """
+
     def __init__(self, bot: discord.Bot):
         self.bot = bot
 
