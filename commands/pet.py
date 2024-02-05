@@ -25,6 +25,7 @@ character = [
     ["eggman", "Eggman"],
     ["gadget", "Gadget"],
     ["gamma", "Gamma"],
+    ["infinite", "Infinite"],
     ["kit", "Kit"],
     ["lanolin", "Lanolin"],
     ["ray", "Ray"],
