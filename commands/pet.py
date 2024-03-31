@@ -1,50 +1,21 @@
 """
-manage.py
-Slash Commands that are meant to be used by whoever is hosting the bot.
+pet.py
+Slash Commands that are meant for petting.
 """
-import asyncio
+
 import os
 
 import discord
 from discord.ext import commands
 from discord.commands import SlashCommandGroup, OptionChoice, Option
 
+from db.pet import Character
 from utils.error_message import apologize
 
 requests_channel = int(os.environ.get("requests_channel", "0"))
 
-character = [
-    # Hoisted characters
-    ["silver", "Silver"],
-    ["barry", "Barry"],
-    # The rest is ordered alphabetically
-    ["amy", "Amy"],
-    ["bean", "Bean"],
-    ["blaze", "Blaze"],
-    ["cream", "Cream"],
-    ["eggman", "Eggman"],
-    ["gadget", "Gadget"],
-    ["gamma", "Gamma"],
-    ["infinite", "Infinite"],
-    ["kit", "Kit"],
-    ["lanolin", "Lanolin"],
-    ["metalsonic", "Metal Sonic"],
-    ["ray", "Ray"],
-    ["shadow", "Shadow"],
-    ["sonic", "Sonic"],
-    ["surge", "Surge"],
-    ["tails", "Tails"],
-    ["tangle", "Tangle"],
-    ["vector", "Vector"],
-    ["whisper", "Whisper"],
-]
-
-oc = [
-    ["quickstrike", "Quickstrike", "shadzydow"],
-    ["sharp", "Sharp", "thesupershotgun"],
-    ["fick", "Fick", "damiancruz123"],
-    ["sank", "Sank", "biggiemater23"],
-]
+character = Character.get_characters()
+oc = Character.get_ocs()
 
 
 def flatten(character_list, column):
@@ -55,6 +26,8 @@ def flatten(character_list, column):
 
 
 def setup(bot):
+    global character
+    global oc
     bot.add_cog(Pet(bot))
 
 

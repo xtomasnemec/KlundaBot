@@ -1,6 +1,6 @@
-#!/usr/bin/env -S venv/bin/python3
 import asyncio
 import os
+from utils.db import init_db
 import discord
 from discord.ext import tasks
 from dotenv import load_dotenv
@@ -13,6 +13,8 @@ load_dotenv()
 # Environment variables
 bot_token = os.environ.get("bot_token")
 owner_id = int(os.environ.get("owner_id", "0"))
+
+init_db()
 
 # The user account
 bot = discord.Bot(owner_id=owner_id)
