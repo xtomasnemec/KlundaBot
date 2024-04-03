@@ -21,8 +21,8 @@ def setup(bot: discord.Bot):
     bot.add_cog(cog)
 
     # Manually trigger decorators.
-    bot.user_command(name="Hug this user")(cog.hug)
-    bot.user_command(name="Wish this user a happy birthday")(cog.bday)
+    bot.user_command(name="⚪ Send Silver hug")(cog.hug)
+    bot.user_command(name="⚪ Send Silver's birthday card")(cog.bday)
 
 
 class Silv(commands.Cog):
