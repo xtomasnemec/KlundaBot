@@ -46,7 +46,7 @@ class Barry(commands.Cog):
             description=f"{hug_from} *hugs* {user.mention}"
         )
         embed.set_image(
-            url="https://raw.githubusercontent.com/Silver-Volt4/SilverBot/main/assets/img/barryhug.png"
+            url="https://raw.githubusercontent.com/Silver-Volt4/SilverBot/main/assets/img/barry_hug.png"
         )
         embed.set_footer(text="SilvBot | Art by @shadows-coffeebeans")
         await ctx.respond(embed=embed)
