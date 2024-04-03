@@ -1,3 +1,4 @@
+#!/usr/bin/env -S venv/bin/python3
 import asyncio
 import os
 from utils.db import init_db
