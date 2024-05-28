@@ -1,4 +1,0 @@
-[submodule "SilverBot"]
-	path = silverbot_data
-	url = https://github.com/silver-volt4/SilverBot
-	branch = assets
