@@ -59,7 +59,7 @@ class Pet(commands.Cog):
             title=f"{ctx.author.display_name} is petting {pet_who}!",
         )
         embed.set_image(
-            url=f"https://raw.githubusercontent.com/Silver-Volt4/SilverBot/main/assets/pet/character/{url_slug}.gif"
+            url=f"https://raw.githubusercontent.com/Silver-Volt4/SilverBot/assets/pet/character/{url_slug}.gif"
         )
         await ctx.respond(embed=embed)
 
@@ -84,7 +84,7 @@ class Pet(commands.Cog):
             title=f"{ctx.author.display_name} is petting {pet_who}!",
         )
         embed.set_image(
-            url=f"https://raw.githubusercontent.com/Silver-Volt4/SilverBot/main/assets/pet/oc/{url_slug}.gif"
+            url=f"https://raw.githubusercontent.com/Silver-Volt4/SilverBot/assets/pet/oc/{url_slug}.gif"
         )
         embed.set_footer(text=f"@{owner}'s Original Character. Added on request.")
         await ctx.respond(embed=embed)
