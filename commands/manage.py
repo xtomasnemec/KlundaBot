@@ -97,6 +97,7 @@ class Manage(commands.Cog):
                 "❌ An owner must be supplied if adding an OC", ephemeral=True
             )
         if url:
+            await ctx.defer(ephemeral=True)
             outfile = f'pet/{"oc" if is_oc else "character"}/{gifname}.gif'
             async with aiohttp.ClientSession() as session:
                 async with session.get(url) as resp:
@@ -116,7 +117,7 @@ class Manage(commands.Cog):
         """
         Update from GitHub.
         """
-        await ctx.defer()
+        await ctx.defer(ephemeral=True)
         repo.update()
         await ctx.respond("✅ Done", ephemeral=True)
 
