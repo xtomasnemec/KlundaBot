@@ -10,7 +10,6 @@ from discord.ext import commands
 from discord.commands import SlashCommandGroup, OptionChoice, Option
 
 from db.pet import Character
-from utils.error_message import apologize
 
 requests_channel = int(os.environ.get("requests_channel", "0"))
 
@@ -45,10 +44,7 @@ class Pet(commands.Cog):
         who: Option(
             str,
             "Who do you want to pet?",
-            choices=[
-                OptionChoice(name=c, value=str(index))
-                for index, c in enumerate(flatten(character, 1))
-            ],
+            choices=[OptionChoice(name=c, value=str(index)) for index, c in enumerate(flatten(character, 1))],
         ),
     ):
         """
@@ -70,10 +66,7 @@ class Pet(commands.Cog):
         who: Option(
             str,
             "Who do you want to pet?",
-            choices=[
-                OptionChoice(name=c, value=str(index))
-                for index, c in enumerate(flatten(oc, 1))
-            ],
+            choices=[OptionChoice(name=c, value=str(index)) for index, c in enumerate(flatten(oc, 1))],
         ),
     ):
         """
@@ -83,9 +76,7 @@ class Pet(commands.Cog):
         embed = discord.Embed(
             title=f"{ctx.author.display_name} is petting {pet_who}!",
         )
-        embed.set_image(
-            url=f"https://raw.githubusercontent.com/Silver-Volt4/SilverBot/assets/pet/oc/{url_slug}.gif"
-        )
+        embed.set_image(url=f"https://raw.githubusercontent.com/Silver-Volt4/SilverBot/assets/pet/oc/{url_slug}.gif")
         embed.set_footer(text=f"@{owner}'s Original Character. Added on request.")
         await ctx.respond(embed=embed)
 

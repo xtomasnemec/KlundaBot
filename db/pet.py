@@ -13,12 +13,10 @@ class Character(BaseModel):
     @staticmethod
     def get_characters():
         return [
-            [c.gif, c.name] for c in Character.select().where(Character.is_oc == False).order_by(-Character.priority, Character.name)
+            [c.gif, c.name]
+            for c in Character.select().where(Character.is_oc == False).order_by(-Character.priority, Character.name)
         ]
 
     @staticmethod
     def get_ocs():
-        return [
-            [c.gif, c.name, c.owner]
-            for c in Character.select().where(Character.is_oc == True)
-        ]
+        return [[c.gif, c.name, c.owner] for c in Character.select().where(Character.is_oc == True)]

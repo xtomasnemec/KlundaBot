@@ -1,5 +1,4 @@
 import subprocess
-import os
 from pathlib import Path
 
 
@@ -10,49 +9,42 @@ def get_output(command, *args, **kwargs):
 
 
 def update():
-    assert subprocess.run(["git", "pull", "origin", "main"]).returncode == 0
+    subprocess.run(["git", "pull", "origin", "main"]).check_returncode()
 
 
 def create_data_clone():
-    assert (
-        subprocess.run(
-            [
-                "git",
-                "clone",
-                "-b",
-                "assets",
-                "--single-branch",
-                REMOTE_URL,
-                ASSET_DIRECTORY_NAME,
-            ],
-            cwd=BOT_DIRECTORY
-        ).returncode
-        == 0
-    )
-    assert (
-        subprocess.run(
-            [
-                "git",
-                "config",
-                "user.name",
-                "SilverBot",
-            ],
-            cwd=ASSET_DIRECTORY
-        ).returncode
-        == 0
-    )
-    assert (
-        subprocess.run(
-            [
-                "git",
-                "config",
-                "user.email",
-                "",
-            ],
-            cwd=ASSET_DIRECTORY
-        ).returncode
-        == 0
-    )
+    subprocess.run(
+        [
+            "git",
+            "clone",
+            "-b",
+            "assets",
+            "--single-branch",
+            REMOTE_URL,
+            ASSET_DIRECTORY_NAME,
+        ],
+        cwd=BOT_DIRECTORY,
+    ).check_returncode()
+
+    subprocess.run(
+        [
+            "git",
+            "config",
+            "user.name",
+            "SilverBot",
+        ],
+        cwd=ASSET_DIRECTORY,
+    ).check_returncode()
+
+    subprocess.run(
+        [
+            "git",
+            "config",
+            "user.email",
+            "",
+        ],
+        cwd=ASSET_DIRECTORY,
+    ).check_returncode()
 
 
 def add_asset(file, path: str):
@@ -61,25 +53,9 @@ def add_asset(file, path: str):
     f = open(path, mode="wb")
     f.write(file)
     f.close()
-    assert (
-        subprocess.run(
-            ["git", "add", str(path)], cwd=ASSET_DIRECTORY
-        ).returncode
-        == 0
-    )
-    assert (
-        subprocess.run(
-            ["git", "commit", "-m", "auto: Upload asset"],
-            cwd=ASSET_DIRECTORY
-        ).returncode
-        == 0
-    )
-    assert (
-        subprocess.run(
-            ["git", "push", "origin", "assets"], cwd=ASSET_DIRECTORY
-        ).returncode
-        == 0
-    )
+    subprocess.run(["git", "add", str(path)], cwd=ASSET_DIRECTORY).check_returncode()
+    subprocess.run(["git", "commit", "-m", "auto: Upload asset"], cwd=ASSET_DIRECTORY).check_returncode()
+    subprocess.run(["git", "push", "origin", "assets"], cwd=ASSET_DIRECTORY).check_returncode()
 
 
 ASSET_DIRECTORY_NAME = "silverbot_data"

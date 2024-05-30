@@ -2,21 +2,17 @@
 silv.py
 Slash Commands that represent Silver the Hedgehog memes and other stuff.
 """
-import importlib
 import random
 
 import discord
 from discord.ext import commands
 from discord.commands import SlashCommandGroup
 
-import assets.spook
-
 
 def setup(bot: discord.Bot):
     """
     Code to run on cog import.
     """
-    importlib.reload(assets.spook)
     cog = Silv(bot)
     bot.add_cog(cog)
 
@@ -75,9 +71,7 @@ class Silv(commands.Cog):
         """
         Sends IT'S NO USE meme.
         """
-        embed = discord.Embed(
-            title="It's no use!", url="https://www.youtube.com/watch?v=Oq8AgIS3ZgU"
-        )
+        embed = discord.Embed(title="It's no use!", url="https://www.youtube.com/watch?v=Oq8AgIS3ZgU")
         embed.set_image(url="https://i.ytimg.com/vi/tLfVHgiPjJA/maxresdefault.jpg")
         embed.set_footer(text="SilvBot")
         await ctx.respond(embed=embed)
@@ -90,7 +84,13 @@ class Silv(commands.Cog):
         embed = discord.Embed(
             title="Boo! Happy Halloween!",
         )
-        url = random.choice(assets.spook.spook)
+        url = random.choice(
+            [
+                "https://i.imgur.com/KSElkNf.jpg",
+                "https://i.imgur.com/PnVijMT.jpg",
+                "https://i.imgur.com/NlftgpM.jpg",
+            ]
+        )
         embed.set_image(url=url)
         embed.set_footer(text="SilvBot")
         await ctx.respond(embed=embed)

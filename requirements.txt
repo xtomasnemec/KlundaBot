@@ -1,4 +1,5 @@
 py-cord
-python-dotenv
-qrcode
-peewee
+python-dotenv~=1.0.1
+qrcode~=7.4.2
+peewee~=3.17.5
+aiohttp~=3.9.5

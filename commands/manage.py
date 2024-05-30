@@ -3,7 +3,6 @@ manage.py
 Slash Commands that are meant to be used by whoever is hosting the bot.
 """
 
-import asyncio
 import os
 
 import aiohttp
@@ -88,14 +87,10 @@ class Manage(commands.Cog):
         name: Option(str, "Character name"),
         is_oc: Option(bool, "Whether this is an OC"),
         owner: Option(str, "Owner of this OC (if applicable)", required=False),
-        url: Option(
-            str, "Image URL to download and automatically commit", required=False
-        ),
+        url: Option(str, "Image URL to download and automatically commit", required=False),
     ):
         if is_oc and not owner:
-            await ctx.respond(
-                "❌ An owner must be supplied if adding an OC", ephemeral=True
-            )
+            await ctx.respond("❌ An owner must be supplied if adding an OC", ephemeral=True)
         if url:
             await ctx.defer(ephemeral=True)
             outfile = f'pet/{"oc" if is_oc else "character"}/{gifname}.gif'
@@ -122,9 +117,7 @@ class Manage(commands.Cog):
         await ctx.respond("✅ Done", ephemeral=True)
 
     @commands.Cog.listener()
-    async def on_application_command_error(
-        self, ctx: discord.ApplicationContext, error: discord.DiscordException
-    ):
+    async def on_application_command_error(self, ctx: discord.ApplicationContext, error: discord.DiscordException):
         """
         Handler for errors (to tell a user they can't use the bot).
         """

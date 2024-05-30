@@ -4,19 +4,15 @@ Slash Commands that are in the global context.
 """
 
 # pylint: disable=invalid-name
-import importlib
 import discord
-from discord.commands import OptionChoice, slash_command, Option
+from discord.commands import slash_command
 from discord.ext import commands
-
-import assets.pet
 
 
 def setup(bot: discord.Bot):
     """
     Code to run on cog import.
     """
-    importlib.reload(assets.pet)
     bot.add_cog(Main(bot))
 
 

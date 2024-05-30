@@ -50,9 +50,7 @@ class Util(commands.Cog):
         await ctx.respond(random.randint(min_n, max_n))
 
     @util.command(name="qr", description="Generate a QR code from a piece of text")
-    async def qr_code(
-        self, ctx: discord.ApplicationContext, text: Option(str, "The text to encode")
-    ):
+    async def qr_code(self, ctx: discord.ApplicationContext, text: Option(str, "The text to encode")):
         """
         Generates a QR code and sends it in chat as a message.
         """
@@ -74,9 +72,7 @@ class Util(commands.Cog):
         """
         Searches for a summary for a term and sends results.
         """
-        search = await fetch_json(
-            f"https://api.duckduckgo.com/?q={urlencode(term)}&format=json"
-        )
+        search = await fetch_json(f"https://api.duckduckgo.com/?q={urlencode(term)}&format=json")
 
         if not search["AbstractText"] == "":
             embed = discord.Embed(
@@ -90,15 +86,11 @@ class Util(commands.Cog):
             await apologize(ctx, "Aww, there are no results for that search.")
 
     @util.command(description="Learn new English words with UrbanDictionary")
-    async def urban(
-        self, ctx: discord.ApplicationContext, word: Option(str, "The word to look up")
-    ):
+    async def urban(self, ctx: discord.ApplicationContext, word: Option(str, "The word to look up")):
         """
         Searches a word with UrbanDictionary API and sends the result.
         """
-        urban_def = await fetch_json(
-            f"http://api.urbandictionary.com/v0/define?term={urlencode(word)}"
-        )
+        urban_def = await fetch_json(f"http://api.urbandictionary.com/v0/define?term={urlencode(word)}")
 
         if not len(urban_def["list"]) == 0:
             word = urban_def["list"][0]["word"]
@@ -138,17 +130,17 @@ class Util(commands.Cog):
             city_name = weather["name"]
             country_code = weather["sys"]["country"]
 
-            date = datetime.datetime.utcfromtimestamp(
-                weather["dt"] + weather["timezone"]
-            ).strftime("%A, %d %B %Y %I:%M %p")
+            date = datetime.datetime.utcfromtimestamp(weather["dt"] + weather["timezone"]).strftime(
+                "%A, %d %B %Y %I:%M %p"
+            )
 
-            sunrise = datetime.datetime.utcfromtimestamp(
-                weather["sys"]["sunrise"] + weather["timezone"]
-            ).strftime("%I:%M %p")
+            sunrise = datetime.datetime.utcfromtimestamp(weather["sys"]["sunrise"] + weather["timezone"]).strftime(
+                "%I:%M %p"
+            )
 
-            sunset = datetime.datetime.utcfromtimestamp(
-                weather["sys"]["sunset"] + weather["timezone"]
-            ).strftime("%I:%M %p")
+            sunset = datetime.datetime.utcfromtimestamp(weather["sys"]["sunset"] + weather["timezone"]).strftime(
+                "%I:%M %p"
+            )
 
             embed = discord.Embed(
                 description=f"retreived @ {date} (in local time)",
@@ -225,9 +217,7 @@ class Util(commands.Cog):
         if subreddit.startswith("r/"):
             subreddit = subreddit[2:]
 
-        reddit_data = await fetch_json(
-            f"https://api.reddit.com/r/{urlencode(subreddit)}/hot?limit=100&raw_json=1"
-        )
+        reddit_data = await fetch_json(f"https://api.reddit.com/r/{urlencode(subreddit)}/hot?limit=100&raw_json=1")
 
         count = int(reddit_data["data"]["dist"])
         if count == 0:
@@ -238,14 +228,11 @@ class Util(commands.Cog):
         embed = discord.Embed(
             title=reddit_data["data"]["children"][post]["data"]["title"][0:256],
             description="by " + reddit_data["data"]["children"][post]["data"]["author"],
-            url="https://reddit.com"
-            + reddit_data["data"]["children"][post]["data"]["permalink"],
+            url="https://reddit.com" + reddit_data["data"]["children"][post]["data"]["permalink"],
         )
         check = None
         try:
-            check = reddit_data["data"]["children"][post]["data"]["preview"]["images"][
-                0
-            ]["source"]["url"]
+            check = reddit_data["data"]["children"][post]["data"]["preview"]["images"][0]["source"]["url"]
         except KeyError:
             pass
 
@@ -260,9 +247,7 @@ class Util(commands.Cog):
         """
         Searches for a word and sends its definiton in chat.
         """
-        definition = await fetch_json(
-            f"https://api.dictionaryapi.dev/api/v2/entries/en/{urlencode(word)}"
-        )
+        definition = await fetch_json(f"https://api.dictionaryapi.dev/api/v2/entries/en/{urlencode(word)}")
 
         if "title" in definition:
             if definition["title"] == "No Definitions Found":
@@ -275,9 +260,7 @@ class Util(commands.Cog):
             for i, meaning in enumerate(defn["meanings"]):
                 embed.add_field(
                     name=f"Meaning #{i+1} | **{meaning['partOfSpeech']}**",
-                    value="\n".join(
-                        ["• " + d["definition"] for d in meaning["definitions"]]
-                    ),
+                    value="\n".join(["• " + d["definition"] for d in meaning["definitions"]]),
                 )
             embeds.append(embed)
 

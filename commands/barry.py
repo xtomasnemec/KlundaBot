@@ -2,8 +2,6 @@
 silv.py
 Slash Commands that represent Silver the Hedgehog memes and other stuff.
 """
-import importlib
-import random
 
 import discord
 from discord.ext import commands
@@ -19,6 +17,7 @@ def setup(bot: discord.Bot):
 
     # Manually trigger decorators.
     bot.user_command(name="🔴 Send Barry hug")(cog.hug)
+
 
 class Barry(commands.Cog):
     """
@@ -41,12 +40,7 @@ class Barry(commands.Cog):
         hug_from = ctx.author.mention
         if user == ctx.author:
             hug_from = self.bot.user.mention
-        embed = discord.Embed(
-            title="Aww, I love hugs! 😊",
-            description=f"{hug_from} *hugs* {user.mention}"
-        )
-        embed.set_image(
-            url="https://raw.githubusercontent.com/Silver-Volt4/SilverBot/assets/barry_hug.png"
-        )
+        embed = discord.Embed(title="Aww, I love hugs! 😊", description=f"{hug_from} *hugs* {user.mention}")
+        embed.set_image(url="https://raw.githubusercontent.com/Silver-Volt4/SilverBot/assets/barry_hug.png")
         embed.set_footer(text="SilvBot | Art by @shadows-coffeebeans")
         await ctx.respond(embed=embed)
