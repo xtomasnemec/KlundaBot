@@ -1,6 +1,6 @@
 """
 main.py
-Slash Commands that are in the global context. 
+Slash Commands that are in the global context.
 """
 
 # pylint: disable=invalid-name

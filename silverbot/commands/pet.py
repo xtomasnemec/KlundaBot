@@ -5,7 +5,15 @@ Slash Commands that are meant for petting.
 
 import os
 
-from discord import Cog, Bot, SlashCommandGroup, ApplicationContext, Option, OptionChoice, Embed
+from discord import (
+    Cog,
+    Bot,
+    SlashCommandGroup,
+    ApplicationContext,
+    Option,
+    OptionChoice,
+    Embed,
+)
 from discord.abc import GuildChannel
 
 from db.pet import Character
@@ -42,7 +50,10 @@ class Pet(Cog):
         who: Option(
             str,
             "Who do you want to pet?",
-            choices=[OptionChoice(name=c, value=str(index)) for index, c in enumerate(flatten(character, 1))],
+            choices=[
+                OptionChoice(name=c, value=str(index))
+                for index, c in enumerate(flatten(character, 1))
+            ],
         ),
     ):
         """
@@ -66,8 +77,7 @@ class Pet(Cog):
             "Who do you want to pet?",
             choices=[
                 OptionChoice(name=c, value=str(index))
-                for index, c
-                in enumerate(flatten(oc, 1))
+                for index, c in enumerate(flatten(oc, 1))
             ],
         ),
     ):
@@ -75,10 +85,15 @@ class Pet(Cog):
         Command that sends a specified petting gif.
         """
         url_slug, pet_who, owner = oc[int(who)]
-        embed = embeds.base(Embed(
-            title=f"{ctx.author.display_name} is petting {pet_who}!",
-        ), f"@{owner}'s Original Character. Added on request.")
-        embed.set_image(url=f"https://raw.githubusercontent.com/Silver-Volt4/SilverBot/assets/pet/oc/{url_slug}.gif")
+        embed = embeds.base(
+            Embed(
+                title=f"{ctx.author.display_name} is petting {pet_who}!",
+            ),
+            f"@{owner}'s Original Character. Added on request.",
+        )
+        embed.set_image(
+            url=f"https://raw.githubusercontent.com/Silver-Volt4/SilverBot/assets/pet/oc/{url_slug}.gif"
+        )
         await ctx.respond(embed=embed)
 
     @pet.command(description="request a character (canon or oc)")

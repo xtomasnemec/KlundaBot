@@ -18,9 +18,11 @@ def error_soft(description: str) -> Embed:
 
 
 def error_critical(message: str) -> Embed:
-    return base(Embed(
-        title=":warning: An exception has occured.",
-        description=f"Technical details: `{message}`\n"
-                    f"Please report this to the developer.",
-        color=0xFF8C00
-    ))
+    return base(
+        Embed(
+            title=":warning: An exception has occured.",
+            description=f"Technical details: `{message}`\n"
+            f"Please report this to the developer.",
+            color=0xFF8C00,
+        )
+    )

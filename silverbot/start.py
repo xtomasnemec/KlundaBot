@@ -40,7 +40,9 @@ def run(config: SilverBotConfig):
 
     # Send message on unhandled error
     @bot.event
-    async def on_application_command_error(ctx: ApplicationContext, error: DiscordException):
+    async def on_application_command_error(
+        ctx: ApplicationContext, error: DiscordException
+    ):
         await ctx.respond(embed=error_critical(str(error)), ephemeral=True)
 
     # Report when logged in

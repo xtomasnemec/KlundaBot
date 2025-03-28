@@ -54,8 +54,12 @@ def add_asset(file, path: str):
     f.write(file)
     f.close()
     subprocess.run(["git", "add", str(path)], cwd=ASSET_DIRECTORY).check_returncode()
-    subprocess.run(["git", "commit", "-m", "auto: Upload asset"], cwd=ASSET_DIRECTORY).check_returncode()
-    subprocess.run(["git", "push", "origin", "assets"], cwd=ASSET_DIRECTORY).check_returncode()
+    subprocess.run(
+        ["git", "commit", "-m", "auto: Upload asset"], cwd=ASSET_DIRECTORY
+    ).check_returncode()
+    subprocess.run(
+        ["git", "push", "origin", "assets"], cwd=ASSET_DIRECTORY
+    ).check_returncode()
 
 
 ASSET_DIRECTORY_NAME = "silverbot_data"

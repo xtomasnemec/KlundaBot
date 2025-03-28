@@ -2,6 +2,7 @@
 silv.py
 Slash Commands that represent Silver the Hedgehog memes and other stuff.
 """
+
 from discord import Bot, Cog, SlashCommandGroup, ApplicationContext, User, Embed
 
 from silverbot.utils import embeds
@@ -40,11 +41,13 @@ class Silv(Cog):
         hug_from = ctx.author.mention
         if user == ctx.author:
             hug_from = self.bot.user.mention
-        embed = embeds.base(Embed(
-            title="Aww, I love hugs! 😊",
-            description=f"{hug_from} *hugs* {user.mention}",
-            url="https://solar-socks.tumblr.com/post/620691516062597120/wanting-to-spread-some-love-and-positive-vibes",
-        ))
+        embed = embeds.base(
+            Embed(
+                title="Aww, I love hugs! 😊",
+                description=f"{hug_from} *hugs* {user.mention}",
+                url="https://solar-socks.tumblr.com/post/620691516062597120/wanting-to-spread-some-love-and-positive-vibes",
+            )
+        )
         embed.set_image(
             url="https://64.media.tumblr.com/675559b932140f379cf55368701bcf1d/d162caca11d6dba1-ad/s1280x1920/1d12928ccff2b2f94424a496cbe21c8811aaa874.png"
         )
@@ -68,7 +71,9 @@ class Silv(Cog):
         Sends IT'S NO USE meme.
         """
         embed = embeds.base(
-            Embed(title="It's no use!", url="https://www.youtube.com/watch?v=Oq8AgIS3ZgU")
+            Embed(
+                title="It's no use!", url="https://www.youtube.com/watch?v=Oq8AgIS3ZgU"
+            )
         )
         embed.set_image(url="https://i.ytimg.com/vi/tLfVHgiPjJA/maxresdefault.jpg")
         await ctx.respond(embed=embed)

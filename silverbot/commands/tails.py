@@ -2,6 +2,7 @@
 tails.py
 Slash Commands that represent Tails the Fox memes and other stuff.
 """
+
 from discord import Embed, ApplicationContext, SlashCommandGroup, Bot, Cog
 
 

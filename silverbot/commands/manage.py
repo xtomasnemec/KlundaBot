@@ -6,8 +6,16 @@ Slash Commands that are meant to be used by whoever is hosting the bot.
 import os
 
 import aiohttp
-from discord import Cog, ApplicationContext, DiscordException, ExtensionNotLoaded, ExtensionNotFound, Bot, Option, \
-    SlashCommandGroup
+from discord import (
+    Cog,
+    ApplicationContext,
+    DiscordException,
+    ExtensionNotLoaded,
+    ExtensionNotFound,
+    Bot,
+    Option,
+    SlashCommandGroup,
+)
 from discord.ext.commands import NotOwner, is_owner
 
 import silverbot
@@ -78,16 +86,20 @@ class Manage(Cog):
 
     @admin.command(descriptioon="Add a pet command")
     async def addpet(
-            self,
-            ctx: ApplicationContext,
-            gifname: Option(str, "GIF filename"),
-            name: Option(str, "Character name"),
-            is_oc: Option(bool, "Whether this is an OC"),
-            owner: Option(str, "Owner of this OC (if applicable)", required=False),
-            url: Option(str, "Image URL to download and automatically commit", required=False),
+        self,
+        ctx: ApplicationContext,
+        gifname: Option(str, "GIF filename"),
+        name: Option(str, "Character name"),
+        is_oc: Option(bool, "Whether this is an OC"),
+        owner: Option(str, "Owner of this OC (if applicable)", required=False),
+        url: Option(
+            str, "Image URL to download and automatically commit", required=False
+        ),
     ):
         if is_oc and not owner:
-            await ctx.respond("❌ An owner must be supplied if adding an OC", ephemeral=True)
+            await ctx.respond(
+                "❌ An owner must be supplied if adding an OC", ephemeral=True
+            )
         if url:
             await ctx.defer(ephemeral=True)
             outfile = f'pet/{"oc" if is_oc else "character"}/{gifname}.gif'
@@ -114,7 +126,9 @@ class Manage(Cog):
         await ctx.respond("✅ Done", ephemeral=True)
 
     @Cog.listener()
-    async def on_application_command_error(self, ctx: ApplicationContext, error: DiscordException):
+    async def on_application_command_error(
+        self, ctx: ApplicationContext, error: DiscordException
+    ):
         """
         Handler for errors (to tell a user they can't use the bot).
         """
