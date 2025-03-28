@@ -52,12 +52,12 @@ class Manage(Cog):
     def reload_cogs(self):
         for cog in silverbot.commands.list():
             try:
-                self.bot.unload_extension(f"{cog}")
+                self.bot.unload_extension(f"commands.{cog}")
             except (ExtensionNotLoaded, ExtensionNotFound):
                 pass
 
         for cog in silverbot.commands.list():
-            self.bot.load_extension(f"{cog}")
+            self.bot.load_extension(f"commands.{cog}")
 
     @admin.command(description="Reload the bot's extensions")
     async def reload(self, ctx: ApplicationContext):
@@ -86,15 +86,15 @@ class Manage(Cog):
 
     @admin.command(descriptioon="Add a pet command")
     async def addpet(
-        self,
-        ctx: ApplicationContext,
-        gifname: Option(str, "GIF filename"),
-        name: Option(str, "Character name"),
-        is_oc: Option(bool, "Whether this is an OC"),
-        owner: Option(str, "Owner of this OC (if applicable)", required=False),
-        url: Option(
-            str, "Image URL to download and automatically commit", required=False
-        ),
+            self,
+            ctx: ApplicationContext,
+            gifname: Option(str, "GIF filename"),
+            name: Option(str, "Character name"),
+            is_oc: Option(bool, "Whether this is an OC"),
+            owner: Option(str, "Owner of this OC (if applicable)", required=False),
+            url: Option(
+                str, "Image URL to download and automatically commit", required=False
+            ),
     ):
         if is_oc and not owner:
             await ctx.respond(
@@ -127,7 +127,7 @@ class Manage(Cog):
 
     @Cog.listener()
     async def on_application_command_error(
-        self, ctx: ApplicationContext, error: DiscordException
+            self, ctx: ApplicationContext, error: DiscordException
     ):
         """
         Handler for errors (to tell a user they can't use the bot).
