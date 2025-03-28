@@ -20,8 +20,8 @@ from discord.ext.commands import NotOwner, is_owner
 
 import silverbot
 from db.pet import Character
-from utils.embeds import error_soft
 from utils import repo
+from utils.embeds import error_soft
 
 admin_guild_id = int(os.environ.get("admin_guild_id", "0"))
 

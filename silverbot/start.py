@@ -1,9 +1,9 @@
 from dataclasses import dataclass
+
 from discord import ApplicationContext, DiscordException, Game, Bot
 from discord.ext import tasks
 
 import silverbot.commands
-
 from utils.embeds import error_critical
 
 _STATUS_MESSAGES = [

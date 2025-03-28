@@ -4,18 +4,18 @@ Commands that represent useful tools.
 """
 
 import datetime
-import random
 import os
+import random
 import re
 
 from discord import Cog, Bot, SlashCommandGroup, ApplicationContext, Option, Embed, File
 
 from utils import embeds
-from utils.urlencode import urlencode
-from utils.embeds import error_soft, send_soft_error
-from utils.qrgen import generate_qr_code
+from utils.embeds import send_soft_error
 from utils.fetch import fetch_json
+from utils.qrgen import generate_qr_code
 from utils.unit_conversions import to_celsius, to_fahrenheit
+from utils.urlencode import urlencode
 
 owm_api_key = os.environ.get("owm_api_key")
 
