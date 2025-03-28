@@ -1,6 +1,6 @@
 from peewee import *
 
-from db.base import BaseModel
+from silverbot.db.base import BaseModel
 
 
 class Character(BaseModel):

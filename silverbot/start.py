@@ -4,7 +4,7 @@ from discord import ApplicationContext, DiscordException, Game, Bot
 from discord.ext import tasks
 
 import silverbot.commands
-from utils.embeds import error_critical
+from silverbot.utils.embeds import error_critical
 
 _STATUS_MESSAGES = [
     "in {servers} servers",
@@ -29,7 +29,7 @@ def run(config: SilverBotConfig):
 
     # Extensions to load initially
     for cog in silverbot.commands.list():
-        bot.load_extension(f"commands.{cog}")
+        bot.load_extension(f"silverbot.commands.{cog}")
 
     # Cycle through status messages
     @tasks.loop(seconds=20)

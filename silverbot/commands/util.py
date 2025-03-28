@@ -10,12 +10,12 @@ import re
 
 from discord import Cog, Bot, SlashCommandGroup, ApplicationContext, Option, Embed, File
 
-from utils import embeds
-from utils.embeds import send_soft_error
-from utils.fetch import fetch_json
-from utils.qrgen import generate_qr_code
-from utils.unit_conversions import to_celsius, to_fahrenheit
-from utils.urlencode import urlencode
+from silverbot.utils import embeds
+from silverbot.utils.embeds import send_soft_error
+from silverbot.utils.fetch import fetch_json
+from silverbot.utils.qrgen import generate_qr_code
+from silverbot.utils.unit_conversions import to_celsius, to_fahrenheit
+from silverbot.utils.urlencode import urlencode
 
 owm_api_key = os.environ.get("owm_api_key")
 

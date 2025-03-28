@@ -16,8 +16,8 @@ from discord import (
 )
 from discord.abc import GuildChannel
 
-from db.pet import Character
-from utils import embeds
+from silverbot.db.pet import Character
+from silverbot.utils import embeds
 
 requests_channel = int(os.environ.get("requests_channel", "0"))
 

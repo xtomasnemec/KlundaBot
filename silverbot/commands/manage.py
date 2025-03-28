@@ -19,9 +19,9 @@ from discord import (
 from discord.ext.commands import NotOwner, is_owner
 
 import silverbot
-from db.pet import Character
-from utils import repo, embeds
-from utils.embeds import error_soft
+from silverbot.db.pet import Character
+from silverbot.utils import repo, embeds
+from silverbot.utils.embeds import error_soft
 
 admin_guild_id = int(os.environ.get("admin_guild_id", "0"))
 
@@ -52,12 +52,12 @@ class Manage(Cog):
     def reload_cogs(self):
         for cog in silverbot.commands.list():
             try:
-                self.bot.unload_extension(f"commands.{cog}")
+                self.bot.unload_extension(f"silverbot.commands.{cog}")
             except (ExtensionNotLoaded, ExtensionNotFound):
                 pass
 
         for cog in silverbot.commands.list():
-            self.bot.load_extension(f"commands.{cog}")
+            self.bot.load_extension(f"silverbot.commands.{cog}")
 
     @admin.command(description="Reload the bot's extensions")
     async def reload(self, ctx: ApplicationContext):
