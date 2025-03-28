@@ -14,13 +14,13 @@ from discord import (
     ExtensionNotFound,
     Bot,
     Option,
-    SlashCommandGroup,
+    SlashCommandGroup, Embed,
 )
 from discord.ext.commands import NotOwner, is_owner
 
 import silverbot
 from db.pet import Character
-from utils import repo
+from utils import repo, embeds
 from utils.embeds import error_soft
 
 admin_guild_id = int(os.environ.get("admin_guild_id", "0"))
@@ -124,6 +124,15 @@ class Manage(Cog):
         await ctx.defer(ephemeral=True)
         repo.update()
         await ctx.respond("✅ Done", ephemeral=True)
+
+    @admin.command(description="Dump info")
+    async def dump(self, ctx: ApplicationContext):
+        guild_embed = embeds.base(Embed(
+            title="Guilds"
+        ))
+        for (i, guild) in enumerate(self.bot.guilds):
+            guild_embed.add_field(name=f"{i + 1}) {guild.name}", value=f"{guild.member_count} members")
+        await ctx.respond(embeds=[guild_embed], ephemeral=True)
 
     @Cog.listener()
     async def on_application_command_error(
