@@ -5,9 +5,8 @@ Slash Commands that are meant for petting.
 
 import os
 
-import discord
-from discord.ext import commands
-from discord.commands import SlashCommandGroup, OptionChoice, Option
+from discord import Cog, Bot, SlashCommandGroup, ApplicationContext, Option, OptionChoice, Embed
+from discord.abc import GuildChannel
 
 from db.pet import Character
 from utils import embeds
@@ -29,17 +28,17 @@ def setup(bot):
     bot.add_cog(Pet(bot))
 
 
-class Pet(commands.Cog):
-    def __init__(self, bot: discord.Bot):
+class Pet(Cog):
+    def __init__(self, bot: Bot):
         self.bot = bot
-        self.requests_channel: discord.GuildChannel = None
+        self.requests_channel: GuildChannel | None = None
 
     pet = SlashCommandGroup("pet", "give out pets to various furballs")
 
     @pet.command(description="pet a character from the canon")
     async def character(
         self,
-        ctx: discord.ApplicationContext,
+        ctx: ApplicationContext,
         who: Option(
             str,
             "Who do you want to pet?",
@@ -50,7 +49,7 @@ class Pet(commands.Cog):
         Command that sends a specified petting gif.
         """
         url_slug, pet_who = character[int(who)]
-        embed = discord.Embed(
+        embed = Embed(
             title=f"{ctx.author.display_name} is petting {pet_who}!",
         )
         embed.set_image(
@@ -61,7 +60,7 @@ class Pet(commands.Cog):
     @pet.command(description="pet a user-submitted original character")
     async def oc(
         self,
-        ctx: discord.ApplicationContext,
+        ctx: ApplicationContext,
         who: Option(
             str,
             "Who do you want to pet?",
@@ -76,7 +75,7 @@ class Pet(commands.Cog):
         Command that sends a specified petting gif.
         """
         url_slug, pet_who, owner = oc[int(who)]
-        embed = embeds.base(discord.Embed(
+        embed = embeds.base(Embed(
             title=f"{ctx.author.display_name} is petting {pet_who}!",
         ), f"@{owner}'s Original Character. Added on request.")
         embed.set_image(url=f"https://raw.githubusercontent.com/Silver-Volt4/SilverBot/assets/pet/oc/{url_slug}.gif")
@@ -85,7 +84,7 @@ class Pet(commands.Cog):
     @pet.command(description="request a character (canon or oc)")
     async def request(
         self,
-        ctx: discord.ApplicationContext,
+        ctx: ApplicationContext,
         who: Option(str, "Name of this character"),
         image: Option(
             str,

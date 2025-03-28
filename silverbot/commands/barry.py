@@ -2,14 +2,12 @@
 silv.py
 Slash Commands that represent Silver the Hedgehog memes and other stuff.
 """
+from discord import Bot, Cog, SlashCommandGroup, ApplicationContext, User, Embed
 
-import discord
-from discord.ext import commands
-from discord.commands import SlashCommandGroup
 from silverbot.utils import embeds
 
 
-def setup(bot: discord.Bot):
+def setup(bot: Bot):
     """
     Code to run on cog import.
     """
@@ -20,21 +18,21 @@ def setup(bot: discord.Bot):
     bot.user_command(name="🔴 Send Barry hug")(cog.hug)
 
 
-class Barry(commands.Cog):
+class Barry(Cog):
     """
     Slash Commands that represent Silver the Hedgehog memes and other stuff.
     """
 
-    def __init__(self, bot: discord.Bot):
+    def __init__(self, bot: Bot):
         self.bot = bot
 
     barry = SlashCommandGroup("barry", "Barry the Quokka fluff")
 
     @barry.command(name="hug", description="Gift somebody a warm hug!")
-    async def _hug(self, ctx: discord.ApplicationContext, user: discord.User):
+    async def _hug(self, ctx: ApplicationContext, user: User):
         await self.hug(ctx, user)
 
-    async def hug(self, ctx: discord.ApplicationContext, user: discord.User):
+    async def hug(self, ctx: ApplicationContext, user: User):
         """
         Sends a hug to a specified user.
         """
@@ -42,7 +40,7 @@ class Barry(commands.Cog):
         if user == ctx.author:
             hug_from = self.bot.user.mention
         embed = embeds.base(
-            discord.Embed(title="Aww, I love hugs! 😊", description=f"{hug_from} *hugs* {user.mention}"),
+            Embed(title="Aww, I love hugs! 😊", description=f"{hug_from} *hugs* {user.mention}"),
             footer_additional="Art by @shadows-coffeebeans"
         )
         embed.set_image(url="https://raw.githubusercontent.com/Silver-Volt4/SilverBot/assets/barry_hug.png")

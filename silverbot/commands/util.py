@@ -7,10 +7,7 @@ import random
 import os
 import re
 
-import discord
-from discord.ext import commands
-from discord.commands import SlashCommandGroup
-from discord.commands import Option
+from discord import Cog, Bot, SlashCommandGroup, ApplicationContext, Option, Embed, File
 
 from utils import embeds
 from utils.urlencode import urlencode
@@ -24,19 +21,19 @@ owm_api_key = os.environ.get("owm_api_key")
 _QR_DISCORD_SCAM = re.compile(r"^https?://discord(app)?\.com/ra/")
 
 
-def setup(bot: discord.Bot):
+def setup(bot: Bot):
     """
     Code to run on cog import.
     """
     bot.add_cog(Util(bot))
 
 
-class Util(commands.Cog):
+class Util(Cog):
     """
     Commands that represent useful tools.
     """
 
-    def __init__(self, bot: discord.Bot):
+    def __init__(self, bot: Bot):
         self.bot = bot
 
     util = SlashCommandGroup("util", "Miscellaneous utility commands")
@@ -44,7 +41,7 @@ class Util(commands.Cog):
     @util.command(description="Give a random number from a range")
     async def rand(
             self,
-            ctx: discord.ApplicationContext,
+            ctx: ApplicationContext,
             min_n: Option(int, "The minimum number"),
             max_n: Option(int, "The maximum number"),
     ):
@@ -54,13 +51,13 @@ class Util(commands.Cog):
         await ctx.respond(random.randint(min_n, max_n))
 
     @util.command(name="qr", description="Generate a QR code from a piece of text")
-    async def qr_code(self, ctx: discord.ApplicationContext, text: Option(str, "The text to encode")):
+    async def qr_code(self, ctx: ApplicationContext, text: Option(str, "The text to encode")):
         """
         Generates a QR code and sends it in chat as a message.
         """
         if _QR_DISCORD_SCAM.match(text):
             await ctx.respond(embed=
-            discord.Embed(
+            Embed(
                 title=f"⚠️ **ATTENTION** ⚠️",
                 description=f"{ctx.author.mention} ({ctx.author.display_name}; ID {ctx.author.id}) has just attempted to use `/util qr` to send a Discord login QR code.\n"
                             f"Such a QR code could be used to **STEAL DISCORD ACCOUNTS**!\n"
@@ -73,7 +70,7 @@ class Util(commands.Cog):
         await ctx.send(
             f"A QR Code has appeared. What might be it pointing to? 👀\n"
             f"(Requested by {ctx.author.mention}.)",
-            file=discord.File(file_name),
+            file=File(file_name),
         )
         await ctx.respond("✅ QR code generated.", ephemeral=True)
         os.remove(file_name)
@@ -81,7 +78,7 @@ class Util(commands.Cog):
     @util.command(description="Search for a term using DuckDuckGo")
     async def ddg(
             self,
-            ctx: discord.ApplicationContext,
+            ctx: ApplicationContext,
             term: Option(str, "The term to search for"),
     ):
         """
@@ -90,7 +87,7 @@ class Util(commands.Cog):
         search = await fetch_json(f"https://api.duckduckgo.com/?q={urlencode(term)}&format=json")
 
         if not search["AbstractText"] == "":
-            embed = embeds.base(discord.Embed(
+            embed = embeds.base(Embed(
                 title=search["Heading"],
                 description=search["AbstractText"],
                 url=search["AbstractURL"],
@@ -100,7 +97,7 @@ class Util(commands.Cog):
             await send_soft_error(ctx, "Aww, there are no results for that search.")
 
     @util.command(description="Learn new English words with UrbanDictionary")
-    async def urban(self, ctx: discord.ApplicationContext, word: Option(str, "The word to look up")):
+    async def urban(self, ctx: ApplicationContext, word: Option(str, "The word to look up")):
         """
         Searches a word with UrbanDictionary API and sends the result.
         """
@@ -113,7 +110,7 @@ class Util(commands.Cog):
             defi = defi.replace("[", "")
             defi = defi.replace("]", "")
 
-            embed = embeds.base(discord.Embed(title=word, description=defi))
+            embed = embeds.base(Embed(title=word, description=defi))
 
             await ctx.respond(embed=embed)
         else:
@@ -122,7 +119,7 @@ class Util(commands.Cog):
     @util.command(description="Get the weather for a location")
     async def weather(
             self,
-            ctx: discord.ApplicationContext,
+            ctx: ApplicationContext,
             location: Option(str, "The location to get the weather for"),
     ):
         """
@@ -155,7 +152,7 @@ class Util(commands.Cog):
                 "%I:%M %p"
             )
 
-            embed = embeds.base(discord.Embed(
+            embed = embeds.base(Embed(
                 description=f"retreived @ {date} (in local time)",
                 title=f"The weather for {city_name}, {country_code}",
             ))
@@ -202,14 +199,14 @@ class Util(commands.Cog):
             await ctx.respond(embed=embed)
 
     @util.command(description="Check Silver's reaction time")
-    async def ping(self, ctx: discord.ApplicationContext):
+    async def ping(self, ctx: ApplicationContext):
         """
         Sends bot latency.
         """
         await ctx.respond(f"Pong! {self.bot.latency}", ephemeral=True)
 
     @util.command(description="Flip a coin!")
-    async def coin(self, ctx: discord.ApplicationContext):
+    async def coin(self, ctx: ApplicationContext):
         """
         Decides between two random values.
         """
@@ -220,7 +217,7 @@ class Util(commands.Cog):
     @util.command(description="Get the latest stuff from Reddit!")
     async def reddit(
             self,
-            ctx: discord.ApplicationContext,
+            ctx: ApplicationContext,
             subreddit: Option(str, "The subreddit to get things from"),
     ):
         """
@@ -237,7 +234,7 @@ class Util(commands.Cog):
             return
 
         post = random.randint(0, count - 1)
-        embed = embeds.base(discord.Embed(
+        embed = embeds.base(Embed(
             title=reddit_data["data"]["children"][post]["data"]["title"][0:256],
             description="by " + reddit_data["data"]["children"][post]["data"]["author"],
             url="https://reddit.com" + reddit_data["data"]["children"][post]["data"]["permalink"],
@@ -254,7 +251,7 @@ class Util(commands.Cog):
         await ctx.respond(embed=embed)
 
     @util.command(description="Search for a word's definition")
-    async def define(self, ctx: discord.ApplicationContext, word):
+    async def define(self, ctx: ApplicationContext, word):
         """
         Searches for a word and sends its definiton in chat.
         """
@@ -267,7 +264,7 @@ class Util(commands.Cog):
 
         embeds = []
         for defn in definition:
-            embed = discord.Embed(title=defn["word"])
+            embed = Embed(title=defn["word"])
             for i, meaning in enumerate(defn["meanings"]):
                 embed.add_field(
                     name=f"Meaning #{i + 1} | **{meaning['partOfSpeech']}**",

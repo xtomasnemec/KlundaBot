@@ -1,12 +1,14 @@
-import qrcode
-import tempfile
+from tempfile import NamedTemporaryFile
+
+from qrcode.constants import ERROR_CORRECT_L
+from qrcode.main import QRCode
 
 
 def generate_qr_code(text: str):
-    file = tempfile.NamedTemporaryFile(suffix=".png", delete=False)
-    qr = qrcode.QRCode(
+    file = NamedTemporaryFile(suffix=".png", delete=False)
+    qr = QRCode(
         version=1,
-        error_correction=qrcode.constants.ERROR_CORRECT_L,
+        error_correction=ERROR_CORRECT_L,
         box_size=10,
         border=4,
     )

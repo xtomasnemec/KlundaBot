@@ -2,34 +2,32 @@
 tails.py
 Slash Commands that represent Tails the Fox memes and other stuff.
 """
-import discord
-from discord.ext import commands
-from discord.commands import SlashCommandGroup
+from discord import Embed, ApplicationContext, SlashCommandGroup, Bot, Cog
 
 
-def setup(bot: discord.Bot):
+def setup(bot: Bot):
     """
     Code to run on cog import.
     """
     bot.add_cog(Tails(bot))
 
 
-class Tails(commands.Cog):
+class Tails(Cog):
     """
     Slash Commands that represent Tails the Fox memes and other stuff.
     """
 
-    def __init__(self, bot: discord.Bot):
+    def __init__(self, bot: Bot):
         self.bot = bot
 
     tails = SlashCommandGroup("tails", "Tails related fluff")
 
     @tails.command(description="make tails fluff his tail")
-    async def tail(self, ctx: discord.ApplicationContext):
+    async def tail(self, ctx: ApplicationContext):
         """
         Sends a gif in chat.
         """
-        embed = discord.Embed(
+        embed = Embed(
             title="Tails is now fluffing his tail.",
         )
         embed.set_image(
@@ -38,11 +36,11 @@ class Tails(commands.Cog):
         await ctx.respond(embed=embed)
 
     @tails.command(description="Ask a local foxxo to ^W^ for you.")
-    async def localfox(self, ctx: discord.ApplicationContext):
+    async def localfox(self, ctx: ApplicationContext):
         """
         Sends an image in chat.
         """
-        embed = discord.Embed(
+        embed = Embed(
             title="^W^",
         )
         embed.set_image(
@@ -51,11 +49,11 @@ class Tails(commands.Cog):
         await ctx.respond(embed=embed)
 
     @tails.command(description="POG")
-    async def pog(self, ctx: discord.ApplicationContext):
+    async def pog(self, ctx: ApplicationContext):
         """
         Sends an image in chat.
         """
-        embed = discord.Embed(
+        embed = Embed(
             title="",
         )
         embed.set_image(url="https://i.imgur.com/RyWEDkY.png")

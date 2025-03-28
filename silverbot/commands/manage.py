@@ -6,10 +6,9 @@ Slash Commands that are meant to be used by whoever is hosting the bot.
 import os
 
 import aiohttp
-import discord
-from discord.ext import commands
-from discord.commands import SlashCommandGroup
-from discord.commands import Option
+from discord import Cog, ApplicationContext, DiscordException, ExtensionNotLoaded, ExtensionNotFound, Bot, Option, \
+    SlashCommandGroup
+from discord.ext.commands import NotOwner, is_owner
 
 import silverbot
 from db.pet import Character
@@ -26,34 +25,34 @@ def setup(bot):
     bot.add_cog(Manage(bot))
 
 
-class Manage(commands.Cog):
+class Manage(Cog):
     """
     Slash Commands that are meant to be used by whoever is hosting the bot.
     They are only available from one (presumably private) server.
     """
 
-    def __init__(self, bot: discord.Bot):
+    def __init__(self, bot: Bot):
         self.bot = bot
 
     admin = SlashCommandGroup(
         "admin",
         "Commands for the bot's owner.",
-        checks=[commands.is_owner().predicate],
+        checks=[is_owner().predicate],
         guild_ids=[admin_guild_id],
     )
 
     def reload_cogs(self):
         for cog in silverbot.commands.list():
             try:
-                self.bot.unload_extension(f"commands.{cog}")
-            except (discord.ExtensionNotLoaded, discord.ExtensionNotFound):
+                self.bot.unload_extension(f"{cog}")
+            except (ExtensionNotLoaded, ExtensionNotFound):
                 pass
 
         for cog in silverbot.commands.list():
-            self.bot.load_extension(f"commands.{cog}")
+            self.bot.load_extension(f"{cog}")
 
     @admin.command(description="Reload the bot's extensions")
-    async def reload(self, ctx: discord.ApplicationContext):
+    async def reload(self, ctx: ApplicationContext):
         """
         Reloads extensions.
         """
@@ -61,7 +60,7 @@ class Manage(commands.Cog):
         await ctx.respond("✅ Done", ephemeral=True)
 
     @admin.command(descriptioon="Sync commands to a guild")
-    async def sync(self, ctx: discord.ApplicationContext):
+    async def sync(self, ctx: ApplicationContext):
         """
         Syncs all commands with Discord.
         """
@@ -69,7 +68,7 @@ class Manage(commands.Cog):
         await ctx.respond("✅ Done", ephemeral=True)
 
     @admin.command(descriptioon="Sync commands to a guild")
-    async def refreshall(self, ctx: discord.ApplicationContext):
+    async def refreshall(self, ctx: ApplicationContext):
         """
         Reload and then sync.
         """
@@ -80,7 +79,7 @@ class Manage(commands.Cog):
     @admin.command(descriptioon="Add a pet command")
     async def addpet(
             self,
-            ctx: discord.ApplicationContext,
+            ctx: ApplicationContext,
             gifname: Option(str, "GIF filename"),
             name: Option(str, "Character name"),
             is_oc: Option(bool, "Whether this is an OC"),
@@ -100,13 +99,13 @@ class Manage(commands.Cog):
         Character.create(gif=gifname, name=name, is_oc=is_oc, owner=owner)
         # pylint: disable=protected-access
         self.bot._pending_application_commands = []
-        self.bot.unload_extension("commands.pet")
-        self.bot.load_extension("commands.pet")
+        self.bot.unload_extension("pet")
+        self.bot.load_extension("pet")
         await self.bot.sync_commands()
         await ctx.respond("✅ Done", ephemeral=True)
 
     @admin.command(description="Update from GitHub")
-    async def pull(self, ctx: discord.ApplicationContext):
+    async def pull(self, ctx: ApplicationContext):
         """
         Update from GitHub.
         """
@@ -114,11 +113,11 @@ class Manage(commands.Cog):
         repo.update()
         await ctx.respond("✅ Done", ephemeral=True)
 
-    @commands.Cog.listener()
-    async def on_application_command_error(self, ctx: discord.ApplicationContext, error: discord.DiscordException):
+    @Cog.listener()
+    async def on_application_command_error(self, ctx: ApplicationContext, error: DiscordException):
         """
         Handler for errors (to tell a user they can't use the bot).
         """
-        if isinstance(error, commands.NotOwner):
+        if isinstance(error, NotOwner):
             ctx.options = {"handled": True}
             await ctx.respond(embed=error_soft("You can't use that command."))
