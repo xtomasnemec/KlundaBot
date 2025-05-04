@@ -1,7 +1,8 @@
 from dataclasses import dataclass
 
-from discord import ApplicationContext, DiscordException, Game, Bot
-from discord.ext import tasks
+from discord.ext.commands import Context, Bot
+from discord import DiscordException, Game
+from discord.ext import tasks, commands
 
 import silverbot.commands
 from silverbot.utils.embeds import error_critical
@@ -41,9 +42,13 @@ def run(config: SilverBotConfig):
     # Send message on unhandled error
     @bot.event
     async def on_application_command_error(
-        ctx: ApplicationContext, error: DiscordException
+        ctx: Context, error: DiscordException
     ):
-        await ctx.respond(embed=error_critical(str(error)), ephemeral=True)
+        await ctx.send(embed=error_critical(str(error)), ephemeral=True)
+
+    @bot.event
+    async def on_command_error(ctx: commands.Context, error: DiscordException):
+        await ctx.send(embed=error_critical(str(error)), ephemeral=True)
 
     # Report when logged in
     @bot.event

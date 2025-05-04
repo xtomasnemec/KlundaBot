@@ -1,4 +1,5 @@
-from discord import Embed, ApplicationContext
+from discord import Embed
+from discord.ext.commands import Context
 
 
 def base(embed: Embed, footer_additional: str | None = None) -> Embed:
@@ -9,7 +10,7 @@ def base(embed: Embed, footer_additional: str | None = None) -> Embed:
     return embed
 
 
-async def send_soft_error(ctx: ApplicationContext, description: str):
+async def send_soft_error(ctx, description: str):
     await ctx.respond(embed=error_soft(description), ephemeral=True)
 
 

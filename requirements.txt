@@ -4,3 +4,4 @@ qrcode~=8.0
 peewee~=3.17.9
 aiohttp~=3.11.14
 pillow
+discord~=2.6.1
